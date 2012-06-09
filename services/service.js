@@ -202,9 +202,9 @@ var serviceInfo = [{
 	icon: 'image/goog-maps.png'
 }, {
 	id: 'android',
-	name: 'Android Market',
-	url: 'https://market.android.com/',
-	icon: 'image/goog-android-market.png'
+	name: 'Google Play',
+	url: 'https://play.google.com/store',
+	icon: 'image/google-play.png'
 }, {
 	id: 'groups',
 	name: 'Google Groups',
@@ -267,6 +267,7 @@ var serviceInfo = [{
 }, {
 	id: 'webstore',
 	name: 'Chrome Web\xA0Store',
+	icon: 'image/chrome-web-store.png',
 	url: 'https://chrome.google.com/webstore'
 }, {
 	id: 'plus'
