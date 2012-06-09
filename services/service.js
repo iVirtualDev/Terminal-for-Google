@@ -1,46 +1,45 @@
 
-function Service(args){
-	Object.defineProperties(this, {
-		id: {value: args.id},
-		name: {value: args.name},
-		url: {value: args.url},
-		icon: {value: args.icon || 'image/goog-logo.png'},
-		menus: {value: args.menus || []},
-		urlContainsScheme: {value: /^[a-z]+:/.test(args.url)},
-		onEnabled: {value: []},
-		onDisabled: {value: []},
-		isEnabled: {value: false, writable: true},
-		menuIds: {value: [], writable: true}
-	});
-	
-	if(pref.get(args.id + '-enabled', true)){
-		var channel = new MessageChannel();
-		channel.port1.postMessage(0);
-		channel.port2.onmessage = function(){
-			this.enable();
-		}.bind(this);
-	}
-	
-	// コンテキストメニューを削除
-	if(args.menus && args.menus.length > 0){
-		window.addEventListener('unload', function(){
-			this.menuIds.forEach(function(menuId){
-				chrome.contextMenus.remove(menuId);
-			});
-		}.bind(this), false);
-	}
-}
+var Service = klass.define({
+	constructor: function Service(args){
+		Object.defineProperties(this, {
+			id: {value: args.id},
+			name: {value: args.name},
+			url: {value: args.url},
+			icon: {value: args.icon || 'image/goog-logo.png'},
+			menus: {value: args.menus || []},
+			urlContainsScheme: {value: /^[a-z]+:/.test(args.url)},
+			onEnabled: {value: []},
+			onDisabled: {value: []},
+			isEnabled: {value: false, writable: true},
+			menuIds: {value: [], writable: true}
+		});
 
-Object.defineProperties(Service.prototype, {
-	enable: {value: function(){
-		if(this.isEnabled){
-			return;
+		// Call this.enable() asynchronously, if this service has been enabled.
+		if(pref.get(args.id + '-enabled', true)){
+			var channel = new MessageChannel();
+			channel.port1.postMessage(0);
+			channel.port2.onmessage = function(){
+				this.enable();
+			}.bind(this);
 		}
-		
+
+		// Remove the all context menus, when the background page is unloaded.
+		if(args.menus && args.menus.length > 0){
+			window.addEventListener('unload', function(){
+				this.menuIds.forEach(function(menuId){
+					chrome.contextMenus.remove(menuId);
+				});
+			}.bind(this), false);
+		}
+	},
+	enable: function(){
+		if(this.isEnabled)
+			return;
+
 		this.isEnabled = true;
 		pref.set(this.id + '-enabled', true);
-		
-		// コンテキストメニューを作成
+
+		// Create context menus.
 		this.menuIds = this.menus.map(function(menu){
 			return chrome.contextMenus.create({
 				type: menu.type || 'normal',
@@ -55,47 +54,48 @@ Object.defineProperties(Service.prototype, {
 				}
 			});
 		});
-		
+
+		// Emit onEnabled event.
 		this.onEnabled.forEach(function(onEnabled){
 			onEnabled.call(this);
 		}, this);
-	}},
-	disable: {value: function(){
-		if(!this.isEnabled){
+	},
+	disable: function(){
+		if(!this.isEnabled)
 			return;
-		}
-		
+
 		this.isEnabled = false;
 		pref.set(this.id + '-enabled', false);
-		
-		// コンテキストメニューを削除
+
+		// Remove context menus.
 		this.menuIds.forEach(function(menuId){
 			chrome.contextMenus.remove(menuId);
 		});
 		this.menuIds = [];
-		
+
+		// Emit onDisabled event.
 		this.onDisabled.forEach(function(onDisabled){
 			onDisabled.call(this);
 		}, this);
-	}},
-	open: {value: function(){
-		var url, secure = pref.get('secure');
-		if(this.urlContainsScheme){
-			url = this.url;
-		}else{
-			url = (secure? 'https://': 'http://') + this.url;
-		}
-		
+	},
+	open: function(){
+		var secure = pref.get('secure');
+		var url = this.urlContainsScheme? this.url:
+			(secure? 'https://': 'http://') + this.url;
+
 		chrome.tabs.getAllInWindow(null, function(tabs){
+			// If the service page has opened, select its tab.
 			for(var i = 0, tab; tab = tabs[i]; i++){
 				if(tab.url && tab.url.indexOf(url) === 0){
 					chrome.tabs.update(tab.id, {selected: true});
 					return;
 				}
 			}
+
+			// Create a new tab.
 			chrome.tabs.create({url: url, selected: true});
-		}.bind(this));
-	}}
+		});
+	}
 });
 
 
@@ -277,17 +277,15 @@ var serviceInfo = [{
 	icon: 'image/goog-panoramio-old.png'
 }];
 
+
 var services;
-function initialize(){
+window.addEventListener('load', function(){
 	services = serviceInfo.map(function(args){
-		if(args.id === 'gmail'){
-			return new Gmail();
-		}else if(args.id === 'reader'){
-			return new GoogleReader();
-		}else if(args.id === 'plus'){
-			return new GooglePlus();
-		}else{
-			return new Service(args);
+		switch(args.id){
+			case 'gmail': return new Gmail();
+			case 'reader': return new GoogleReader();
+			case 'plus': return new GooglePlus();
+			default: return new Service(args);
 		}
 	});
-}
+});
