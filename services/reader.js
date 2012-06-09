@@ -4,7 +4,7 @@ function GoogleReader(){
 		id: 'reader',
 		name: 'Google Reader',
 		url: 'www.google.com/reader',
-		icon: 'image/goog-reader.png'
+		icon: 'images/goog-reader.png'
 	});
 
 	Object.defineProperties(this, {

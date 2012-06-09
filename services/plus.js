@@ -4,7 +4,7 @@ function GooglePlus(){
 		id: 'plus',
 		name: 'Google+',
 		url: 'plus.google.com/',
-		icon: 'image/g-plus-icon-150x150.png'
+		icon: 'images/g-plus-icon-150x150.png'
 	});
 
 	Object.defineProperties(this, {

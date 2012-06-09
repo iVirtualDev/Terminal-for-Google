@@ -5,7 +5,7 @@ var Service = klass.define({
 			id: {value: args.id},
 			name: {value: args.name},
 			url: {value: args.url},
-			icon: {value: args.icon || 'image/goog-logo.png'},
+			icon: {value: args.icon || 'images/goog-logo.png'},
 			menus: {value: args.menus || []},
 			urlContainsScheme: {value: /^[a-z]+:/.test(args.url)},
 			onEnabled: {value: []},
@@ -105,49 +105,49 @@ var serviceInfo = [{
 	id: 'calendar',
 	name: 'Google Calendar',
 	url: 'www.google.com/calendar',
-	icon: 'image/goog-cal.png'
+	icon: 'images/goog-cal.png'
 }, {
 	id: 'reader'
 }, {
 	id: 'contacts',
 	name: 'Contacts',
 	url: 'www.google.com/contacts',
-	icon: 'image/goog-contacts.png'
+	icon: 'images/goog-contacts.png'
 }, {
 	id: 'tasks',
 	name: 'Tasks',
 	url: 'mail.google.com/tasks/canvas',
-	icon: 'image/goog-tasks.png'
+	icon: 'images/goog-tasks.png'
 }, {
 	id: 'docs',
 	name: 'Google Docs',
 	url: 'docs.google.com',
-	icon: 'image/goog-docs.png'
+	icon: 'images/goog-docs.png'
 }, {
 	id: 'sites',
 	name: 'Google Sites',
 	url: 'sites.google.com',
-	icon: 'image/goog-sites.png'
+	icon: 'images/goog-sites.png'
 }, {
 	id: 'analytics',
 	name: 'Analytics',
 	url: 'www.google.com/analytics/settings/home',
-	icon: 'image/goog-analytics.png'
+	icon: 'images/goog-analytics.png'
 }, {
 	id: 'tools',
 	name: 'Webmaster Tools',
 	url: 'www.google.com/webmasters/tools/home',
-	icon: 'image/goog-webmaster.png'
+	icon: 'images/goog-webmaster.png'
 }, {
 	id: 'feed',
 	name: 'FeedBurner',
 	url: 'feedburner.google.com',
-	icon: 'image/goog-feedburner.png'
+	icon: 'images/goog-feedburner.png'
 }, {
 	id: 'blog',
 	name: 'Blogger',
 	url: 'www.blogger.com/home',
-	icon: 'image/goog-blogger.png',
+	icon: 'images/goog-blogger.png',
 	menus: [{
 		title: 'Blog this page',
 		context: 'page',
@@ -165,22 +165,22 @@ var serviceInfo = [{
 	id: 'adsense',
 	name: 'Adsense',
 	url: 'www.google.com/adsense',
-	icon: 'image/goog-adsense-old.png'
+	icon: 'images/goog-adsense-old.png'
 }, {
 	id: 'appengine',
 	name: 'AppEngine',
 	url: 'appengine.google.com',
-	icon: 'image/goog-app-engine.png'
+	icon: 'images/goog-app-engine.png'
 }, {
 	id: 'picasa',
 	name: 'Picasa',
 	url: 'picasaweb.google.com/home',
-	icon: 'image/goog-picasa.png'
+	icon: 'images/goog-picasa.png'
 }, {
 	id: 'youtube',
 	name: 'YouTube',
 	url: 'www.youtube.com',
-	icon: 'image/goog-you-tube.png'
+	icon: 'images/goog-you-tube.png'
 }, {
 	id: 'dashboard',
 	name: 'Dashboard',
@@ -189,52 +189,52 @@ var serviceInfo = [{
 	id: 'accounts',
 	name: 'Accounts',
 	url: 'https://www.google.com/accounts/',
-	icon: 'image/goog-account-settings.png'
+	icon: 'images/goog-account-settings.png'
 }, {
 	id: 'news',
 	name: 'Google News',
 	url: 'news.google.com',
-	icon: 'image/goog-news.png'
+	icon: 'images/goog-news.png'
 }, {
 	id: 'maps',
 	name: 'Google Maps',
 	url: 'maps.google.com',
-	icon: 'image/goog-maps.png'
+	icon: 'images/goog-maps.png'
 }, {
 	id: 'android',
 	name: 'Google Play',
 	url: 'https://play.google.com/store',
-	icon: 'image/google-play.png'
+	icon: 'images/google-play.png'
 }, {
 	id: 'groups',
 	name: 'Google Groups',
 	url: 'groups.google.com',
-	icon: 'image/goog-groups-old.png'
+	icon: 'images/goog-groups-old.png'
 }, {
 	id: 'igoogle',
 	name: 'iGoogle',
 	url: 'http://www.google.com/ig',
-	icon: 'image/goog-igoogle-old.png'
+	icon: 'images/goog-igoogle-old.png'
 }, {
 	id: 'notebook',
 	name: 'Google Notebook',
 	url: 'www.google.com/notebook/',
-	icon: 'image/goog-notebook.png'
+	icon: 'images/goog-notebook.png'
 }, {
 	id: 'translate',
 	name: 'Google Translate',
 	url: 'http://translate.google.com/',
-	icon: 'image/goog-translate.png'
+	icon: 'images/goog-translate.png'
 }, {
 	id: 'voice',
 	name: 'Google Voice',
 	url: 'http://www.google.com/voice',
-	icon: 'image/goog-voice-new.png'
+	icon: 'images/goog-voice-new.png'
 }, {
 	id: 'bookmarks',
 	name: 'Google Bookmarks',
 	url: 'http://www.google.com/bookmarks',
-	icon: 'image/goog-bookmarks.png'
+	icon: 'images/goog-bookmarks.png'
 }, {
 	id: 'urlshortener',
 	name: 'Google URL Shortener',
@@ -243,31 +243,31 @@ var serviceInfo = [{
 	id: 'music',
 	name: 'music beta',
 	url: 'music.google.com/music/',
-	icon: 'image/goog-music-o.png'
+	icon: 'images/goog-music-o.png'
 }, {
 	id: 'knol',
 	name: 'Knol',
 	url: 'http://knol.google.com/k',
-	icon: 'image/goog-knol.png'
+	icon: 'images/goog-knol.png'
 }, {
 	id: 'finance',
 	name: 'Google finance',
 	url: 'www.google.com/finance',
-	icon: 'image/goog-finance-g.png'
+	icon: 'images/goog-finance-g.png'
 }, {
 	id: 'moderator',
 	name: 'Google Moderator',
 	url: 'www.google.com/moderator',
-	icon: 'image/goog-moderator.png'
+	icon: 'images/goog-moderator.png'
 }, {
 	id: 'books',
 	name: 'Google Books',
 	url: 'http://books.google.com',
-	icon: 'image/goog-books.png'
+	icon: 'images/goog-books.png'
 }, {
 	id: 'webstore',
 	name: 'Chrome Web\xA0Store',
-	icon: 'image/chrome-web-store.png',
+	icon: 'images/chrome-web-store.png',
 	url: 'https://chrome.google.com/webstore'
 }, {
 	id: 'plus'
@@ -275,7 +275,7 @@ var serviceInfo = [{
 	id: 'panoramio',
 	name: 'Panoramio',
 	url: 'http://www.panoramio.com',
-	icon: 'image/goog-panoramio-old.png'
+	icon: 'images/goog-panoramio-old.png'
 }];
 
 

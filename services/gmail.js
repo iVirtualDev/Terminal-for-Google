@@ -4,7 +4,7 @@ function Gmail(){
 		id: 'gmail',
 		name: 'Gmail',
 		url: 'mail.google.com/mail',
-		icon: 'image/goog-mail.png',
+		icon: 'images/goog-mail.png',
 		menus: [
 			{
 				title: 'Mail this page',
