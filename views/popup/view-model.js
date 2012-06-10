@@ -110,7 +110,7 @@ window.dataContext = new iggy.ViewModel({
 	openOptionPage: {
 		value: new iggy.Command(function(){
 			chrome.tabs.create({
-				url: chrome.extension.getURL('/views/option.html'),
+				url: chrome.extension.getURL('/views/option/index.html'),
 				selected: true
 			}, function(){
 				window.close();
