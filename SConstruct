@@ -29,6 +29,7 @@ files = (Query(gitLsFiles.stdout)
 
 files = files.tolist();
 files.append('scripts/iggyjs/iggy.js');
+files.append('scripts/klassjs/klass.js')
 
 Command('a.zip', files, 'zip $TARGET $SOURCES')
 
