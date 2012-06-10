@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Terminal for Google</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="/scripts/iggyjs/iggy.js"></script>
+	<script src="view.js"></script>
+	<script src="view-model.js"></script>
+</head>
+<body>
+	<div id="nav">
+		<div id="title">
+			<img src="/images/goog-logo-old.png"><span>Options</span>
+		</div>
+		<ul id="nav-list">
+			<li data-nav="#policy"><a href="#policy">Policy</a>
+			<li data-nav="#services"><a href="#services">Services</a>
+			<li data-nav="#about"><a href="#about">About</a>
+		</ul>
+	</div>
+	<div id="contents">
+		<iframe id="policy" src="/views/option/policy.html"></iframe>
+		<iframe id="services" src="/views/option/services.html"></iframe>
+		<iframe id="about" src="/views/option/about.html"></iframe>
+	</div>
+</body>
+</html>

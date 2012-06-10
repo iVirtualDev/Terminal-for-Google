@@ -22,7 +22,7 @@
 	],
 	
 	"background_page": "back.html",
-	"options_page": "views/option.html",
+	"options_page": "views/option/index.html",
 	
 	"browser_action": {
 		"default_title": "Terminal for Google",

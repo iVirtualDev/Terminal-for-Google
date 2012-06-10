@@ -2,72 +2,37 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="/styles/option.css">
+	<link rel="stylesheet" href="page-style.css">
 	<link rel="stylesheet" href="/styles/service.css">
-	<script>
-		window.dataContext = top.dataContext;
-		window.onload = function(){
-			top.iggy.initialize(document, dataContext);
-		};
-	</script>
-	<style>
-		.service-list {
-			margin: 16px auto;
-			border-radius: 5px;
-			min-height: 40px;
-			background: #FFF;
-			transition: background 0.1s;
-			-webkit-transition: background 0.3s;
-		}
-
-		.dragging .service-list {
-			background: #CDF;
-			box-shadow: 0 0 0 1px #BCE;
-		}
-
-		.service {
-			user-drag: element;
-			-webkit-user-drag: element;
-			cursor: move;
-		}
-
-		.service:-webkit-drag > div {
-			background: #FFF;
-			opacity: 0.7;
-		}
-
-		[data-columns=3].service-list > .service:nth-child(3n):last-child,
-		[data-columns=4].service-list > .service:nth-child(4n):last-child,
-		[data-columns=5].service-list > .service:nth-child(5n):last-child {
-			margin-bottom: 41px;
-		}
-	</style>
+	<script src="page-view.js"></script>
+	<script src="page-view-model.js"></script>
 </head>
 <body>
-	<section>
-		<h1>Enabled Services</h1>
+	<div class="sect">
+		<div class="sect-title">Enabled Services</div>
+		<ul></ul>
 		<ul id="enabled-services" class="service-list"
 			data-template="service-template"
 			data-bind="data-columns: columns; items: enabledServices"></ul>
-	</section>
+	</div>
 
-	<section>
-		<h1>Disabled Services</h1>
+	<div class="sect">
+		<div class="sect-title">Disabled Services</div>
 		<ul id="disabled-services" class="service-list"
 			data-template="service-template"
 			data-bind="data-columns: columns; items: disabledServices"></ul>
-	</section>
+	</div>
 
 	<script type="text/html" id="service-template"><li class="service"
-		data-bind="data-service-id: id">
+		data-draggable="service" data-bind="data-service-id: id">
 		<div>
 			<img data-bind="src: image">
 			<span data-bind="text: name"></span>
 		</div>
 	</li></script>
 
-	<section data-bind="style-display: gmailDisplay">
-		<h1>Gmail</h1>
+	<div class="sect" data-bind="style-display: gmailDisplay">
+		<div class="sect-title">Gmail</div>
 		<ul>
 			<li>
 				<input type="checkbox" id="gmail-poll-box"
@@ -81,35 +46,14 @@
 					<option value="600000">10min
 					<option value="1800000">30min
 				</select>
-				<span class="msg">saved</span>
+				<span data-key="gmail-poll-enabled gmail-poll-interval"
+					class="msg">saved</span>
 			</li>
 		</ul>
-	</section>
-	<script>
-		(function(){
-			var msg = document.querySelector('#gmail-poll-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('gmail-poll-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-	</script>
+	</div>
 
-	<section data-bind="style-display: readerDisplay">
-		<h1>Google Reader</h1>
+	<div class="sect" data-bind="style-display: readerDisplay">
+		<div class="sect-title">Google Reader</div>
 		<ul>
 			<li>
 				<input type="checkbox" id="reader-poll-box"
@@ -123,35 +67,14 @@
 					<option value="600000">10min
 					<option value="1800000">30min
 				</select>
-				<span class="msg">saved</span>
+				<span data-key="reader-poll-enabled reader-poll-interval"
+					class="msg">saved</span>
 			</li>
 		</ul>
-	</section>
-	<script>
-		(function(){
-			var msg = document.querySelector('#reader-poll-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('reader-poll-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-	</script>
+	</div>
 
-	<section data-bind="style-display: plusDisplay">
-		<h1>Google+</h1>
+	<div class="sect" data-bind="style-display: plusDisplay">
+		<div class="sect-title">Google+</div>
 		<ul>
 			<li>
 				<input type="checkbox" id="plus-poll-box"
@@ -165,164 +88,24 @@
 					<option value="600000">10min
 					<option value="1800000">30min
 				</select>
-				<span class="msg">saved</span>
+				<span data-key="plus-poll-enabled plus-poll-interval"
+					class="msg">saved</span>
 			</li>
 		</ul>
-	</section>
-	<script>
-		(function(){
-			var msg = document.querySelector('#plus-poll-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('plus-poll-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-	</script>
+	</div>
 
-	<section data-bind="style-display: urlshortenerDisplay">
-		<h1>Google URL Shortener</h1>
+	<div class="sect" data-bind="style-display: urlshortenerDisplay">
+		<div class="sect-title">Google URL Shortener</div>
 		<ul>
 			<li>
 				<input type="checkbox" id="shorten-button-box"
 					data-bind="checked: shortenButtonEnabled">
 				<label for="shorten-button-box">enable "Shorten" button</label>
-				<span class="msg">saved</span>
+				<span data-key="shorten-button-enabled"
+					class="msg">saved</span>
 			</li>
 		</ul>
-	</section>
-	<script>
-		(function(){
-			var msg = document.querySelector('#shorten-button-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('shorten-button-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-	</script>
-
-	<script>
-		var enabledServices = document.querySelector('#enabled-services');
-		var disabledServices = document.querySelector('#disabled-services');
-
-
-		document.addEventListener('dragstart', function(event){
-			var target = event.target;
-			if(!target.classList.contains('service'))
-				return;
-			document.body.classList.add('dragging');
-			event.dataTransfer.setData('text', target.dataset.serviceId);
-		});
-
-		document.addEventListener('drop', function(event){
-			document.body.classList.remove('dragging');
-		});
-
-
-		enabledServices.addEventListener('dragenter', function(event){
-			event.preventDefault();
-		});
-
-		enabledServices.addEventListener('dragover', function(event){
-			event.preventDefault();
-		});
-
-		enabledServices.addEventListener('drop', function(event){
-			event.preventDefault();
-
-			var serviceId = event.dataTransfer.getData('text');
-			var target = event.target;
-			reorder(serviceId, target,
-				dataContext.disabledServices, dataContext.enabledServices);
-		});
-
-
-		disabledServices.addEventListener('dragenter', function(event){
-			event.preventDefault();
-		});
-
-		disabledServices.addEventListener('dragover', function(event){
-			event.preventDefault();
-		});
-
-		disabledServices.addEventListener('drop', function(event){
-			event.preventDefault();
-
-			var serviceId = event.dataTransfer.getData('text');
-			var target = event.target;
-			reorder(serviceId, target,
-				dataContext.enabledServices, dataContext.disabledServices);
-		});
-
-
-		function reorder(serviceId, target, droppedList, theOtherList){
-			var list1 = droppedList;
-			var list2 = theOtherList;
-
-			var index = list1.find(function(service){
-				return service.id === serviceId;
-			});
-
-			if(index === -1){
-				index = list2.find(function(service){
-					return service.id === serviceId;
-				});
-
-				if(index === -1)
-					return;
-
-				list1 = list2;
-			}else{
-				item = list1.get(index);
-			}
-
-			var item = list1.get(index);
-
-			if(target.webkitMatchesSelector('li, li *')){
-				while(!target.classList.contains('service'))
-					target = target.parentElement;
-
-				var targetId = target.dataset.serviceId;
-				var targetIndex = list2.find(function(service){
-					return service.id === targetId;
-				});
-
-				if(targetIndex === -1)
-					targetIndex = index;
-
-				list1.removeAt(index);
-				list2.insert(targetIndex, item);
-			}else{
-				list1.removeAt(index);
-				list2.append(item);
-			}
-		}
-	</script>
+	</div>
 </body>
 </html>
 

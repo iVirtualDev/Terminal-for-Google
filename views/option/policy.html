@@ -2,57 +2,31 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="/styles/option.css">
-	<script>
-		window.dataContext = top.dataContext;
-		window.onload = function(){
-			top.iggy.initialize(document, dataContext);
-		};
-	</script>
+	<link rel="stylesheet" href="page-style.css">
+	<script src="page-view.js"></script>
+	<script src="page-view-model.js"></script>
 </head>
 <body>
-	<section>
-		<h1>Security</h1>
+	<div class="sect">
+		<div class="sect-title">Security</div>
 		<ul>
 			<li>
 				<input id="secure-box" type="checkbox"
 					data-bind="checked: secure">
 				<label for="secure-box">use SSL (https://〜)</label>
-				<span class="msg">saved</span>
+				<span data-key="secure" class="msg">saved</span>
 			</li>
 		</ul>
-	</section>
-	<script>
-		(function(){
-			var msg = document.querySelector('#secure-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('secure-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-	</script>
+	</div>
 
-	<section>
-		<h1>Apperance</h1>
+	<div class="sect">
+		<div class="sect-title">Apperance</div>
 		<ul>
 			<li>
 				<input id="icon-only-box" type="checkbox"
 					data-bind="checked: iconOnly">
 				<label for="icon-only-box">show icon only</label>
-				<span class="msg">saved</span>
+				<span data-key="icon-only" class="msg">saved</span>
 			</li>
 			<li>
 				<label for="columns-box">columns</label>
@@ -61,53 +35,9 @@
 					<option value="4">4</option>
 					<option value="5">5</option>
 				</select>
-				<span class="msg">saved</span>
+				<span data-key="columns" class="msg">saved</span>
 			</li>
 		</ul>
-	</section>
-	<script>
-		(function(){
-			var msg = document.querySelector('#icon-only-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('icon-only-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-
-		(function(){
-			var msg = document.querySelector('#columns-box ~ .msg');
-			var timeout = null;
-			window.top.addEventListener('columns-saved', function handler(){
-				if(timeout){
-					clearTimeout(timeout);
-					msg.classList.remove('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						handler();
-					}, 100);
-				}else{
-					msg.classList.add('saved');
-					timeout = setTimeout(function(){
-						timeout = null;
-						msg.classList.remove('saved');
-					}, 1600);
-				}
-			});
-		}());
-	</script>
+	</div>
 </body>
 </html>
-

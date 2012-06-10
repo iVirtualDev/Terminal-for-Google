@@ -16,7 +16,7 @@ window.dataContext = new iggy.ViewModel({
 			value = Boolean(value);
 			this._secure = value;
 			pref.set('secure', value);
-			this.dispatchEvent('secure-saved');
+			this.onPreferenceSaved('secure');
 		}
 	},
 	_iconOnly: {
@@ -31,7 +31,7 @@ window.dataContext = new iggy.ViewModel({
 			value = Boolean(value);
 			this._iconOnly = value;
 			pref.set('icon-only', value);
-			this.dispatchEvent('icon-only-saved');
+			this.onPreferenceSaved('icon-only');
 		}
 	},
 	_columns: {
@@ -48,7 +48,7 @@ window.dataContext = new iggy.ViewModel({
 				return;
 			this._columns = value;
 			pref.set('columns', value);
-			this.dispatchEvent('columns-saved');
+			this.onPreferenceSaved('columns');
 		}
 	},
 	_gmailEnabled: {
@@ -82,7 +82,7 @@ window.dataContext = new iggy.ViewModel({
 			value = Boolean(value);
 			this._gmailPollEnabled = value;
 			pref.set('gmail-poll-enabled', value);
-			this.dispatchEvent('gmail-poll-saved');
+			this.onPreferenceSaved('gmail-poll-enabled');
 		}
 	},
 	_gmailPollInterval: {
@@ -99,7 +99,7 @@ window.dataContext = new iggy.ViewModel({
 				return;
 			this._gmailPollInterval = value;
 			pref.set('gmail-poll-interval', value);
-			this.dispatchEvent('gmail-poll-saved');
+			this.onPreferenceSaved('gmail-poll-interval');
 		}
 	},
 	_readerEnabled: {
@@ -133,7 +133,7 @@ window.dataContext = new iggy.ViewModel({
 			value = Boolean(value);
 			this._readerPollEnabled = value;
 			pref.set('reader-poll-enabled', value);
-			this.dispatchEvent('reader-poll-saved');
+			this.onPreferenceSaved('reader-poll-enabled');
 		}
 	},
 	_readerPollInterval: {
@@ -150,7 +150,7 @@ window.dataContext = new iggy.ViewModel({
 				return;
 			this._readerPollInterval = value;
 			pref.set('reader-poll-interval', value);
-			this.dispatchEvent('reader-poll-saved');
+			this.onPreferenceSaved('reader-poll-interval');
 		}
 	},
 	_plusEnabled: {
@@ -184,7 +184,7 @@ window.dataContext = new iggy.ViewModel({
 			value = Boolean(value);
 			this._plusPollEnabled = value;
 			pref.set('plus-poll-enabled', value);
-			this.dispatchEvent('plus-poll-saved');
+			this.onPreferenceSaved('plus-poll-enabled');
 		}
 	},
 	_plusPollInterval: {
@@ -201,7 +201,7 @@ window.dataContext = new iggy.ViewModel({
 				return;
 			this._plusPollInterval = value;
 			pref.set('plus-poll-interval', value);
-			this.dispatchEvent('plus-poll-saved');
+			this.onPreferenceSaved('plus-poll-interval');
 		}
 	},
 	_urlshortenerEnabled: {
@@ -235,7 +235,7 @@ window.dataContext = new iggy.ViewModel({
 			value = Boolean(value);
 			this._shortenButtonEnabled = value;
 			pref.set('shorten-button-enabled', value);
-			this.dispatchEvent('shorten-button-saved');
+			this.onPreferenceSaved('shorten-button-enabled');
 		}
 	},
 	_serviceOrder: {
@@ -348,26 +348,35 @@ window.dataContext = new iggy.ViewModel({
 			event.initEvent(type, false, false);
 			window.dispatchEvent(event);
 		}
+	},
+	onPreferenceSaved: {
+		value: function(key){
+			var event = document.createEvent('Event');
+			event.initEvent('pref-saved', false, false);
+			event.key = key;
+			window.dispatchEvent(event);
+		}
 	}
 });
 
 
 window.addEventListener('pref-changed', function(event){
-	// abc-defをabcDefの形式に変換する
+	// A camelized key.
 	var key = event.key.replace(/-([a-z])/g, function($0, $1){
 		return $1.toUpperCase();
 	});
 
 	if(key in window.dataContext){
+		// Notifies the change of the property.
 		window.dataContext['_' + key] = event.value;
 		window.dataContext.notifyPropertyChange(key);
 
-		// keyがgmailEnabledやreaderEnabledのようにEnabledで終わる場合
-		// EnabledをDisplayに置き換えたプロパティも変更されたと通知する
+		// If the key ends with "Enabled" (like "gmailEnabled" and
+		// "readerEnabled"), notifies the change of the property which
+		// "Enable" replaced by "Dispaly" too.
 		if(/Enabled$/.test(key)){
 			window.dataContext.notifyPropertyChange(
 				key.slice(0, key.lastIndexOf('Enabled')) + 'Display');
 		}
 	}
 });
-
