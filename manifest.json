@@ -1,10 +1,10 @@
 {
 	"name": "Terminal for Google",
-	"version": "1.8.21",
+	"version": "1.9.21",
 	"description": "Quick access to Google!",
 	
 	"icons": {
-		"128": "image/goog-logo-old.png"
+		"128": "images/icon-128.png"
 	},
 	
 	"permissions": [
@@ -17,16 +17,16 @@
 		{
 			"matches": ["*://*/*"],
 			"css": [],
-			"js": ["js/content.js"]
+			"js": ["scripts/content.js"]
 		}
 	],
 	
 	"background_page": "back.html",
-	"options_page": "views/option.html",
+	"options_page": "views/option/index.html",
 	
 	"browser_action": {
 		"default_title": "Terminal for Google",
-		"default_icon": "image/goog-logo-old.png",
-		"popup": "views/popup.html"
+		"default_icon": "images/goog-logo-old.png",
+		"popup": "views/popup/index.html"
 	}
 }

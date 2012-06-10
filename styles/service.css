@@ -11,7 +11,7 @@
 [data-columns="4"].icon-only.service-list { width: 160px }
 [data-columns="5"].icon-only.service-list { width: 200px }
 
-.service {
+.service-list > .service {
 	display: inline-block;
 	box-sizing: border-box;
 	margin: 0;

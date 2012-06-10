@@ -110,7 +110,7 @@ window.dataContext = new iggy.ViewModel({
 	openOptionPage: {
 		value: new iggy.Command(function(){
 			chrome.tabs.create({
-				url: chrome.extension.getURL('/views/option.html'),
+				url: chrome.extension.getURL('/views/option/index.html'),
 				selected: true
 			}, function(){
 				window.close();
@@ -146,8 +146,10 @@ function shortenURL(callback){
 						window.addEventListener('load', a);
 					}
 					function a(){
-						document.querySelector('#shorten').value =
-							"%TAB_URL%";
+						setTimeout(function(){
+							document.querySelector('input[type=text]').value =
+								"%TAB_URL%";
+						}, 1000);
 					}
 				}.toString().replace('%TAB_URL%', tab.url) + '()'
 			});
