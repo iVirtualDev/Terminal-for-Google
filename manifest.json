@@ -4,7 +4,7 @@
 	"description": "Quick access to Google!",
 	
 	"icons": {
-		"128": "images/goog-logo-old.png"
+		"128": "images/icon-128.png"
 	},
 	
 	"permissions": [
