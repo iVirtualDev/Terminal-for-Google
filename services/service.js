@@ -120,8 +120,8 @@ var serviceInfo = [{
 	icon: 'images/goog-tasks.png'
 }, {
 	id: 'docs',
-	name: 'Google Docs',
-	url: 'docs.google.com',
+	name: 'Google Drive',
+	url: 'drive.google.com',
 	icon: 'images/goog-docs.png'
 }, {
 	id: 'sites',
