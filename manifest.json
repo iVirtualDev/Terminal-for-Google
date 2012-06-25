@@ -38,7 +38,7 @@
 
 	"browser_action": {
 		"default_title": "Terminal for Google",
-		"default_icon": "images/goog-logo-old.png",
+		"default_icon": "images/icon-19.png",
 		"default_popup": "views/popup/index.html"
 	},
 
