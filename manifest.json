@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Terminal for Google",
-	"version": "1.10.21",
+	"version": "1.10.22",
 	"description": "Quick access to Google!",
 
 	"icons": {
@@ -10,6 +10,7 @@
 
 	"permissions": [
 		"contextMenus",
+		"*://*/*",
 		"tabs"
 	],
 
