@@ -1,18 +1,18 @@
 {
+	"manifest_version": 2,
 	"name": "Terminal for Google",
-	"version": "1.9.21",
+	"version": "1.10.21",
 	"description": "Quick access to Google!",
-	
+
 	"icons": {
 		"128": "images/icon-128.png"
 	},
-	
+
 	"permissions": [
 		"contextMenus",
-		"tabs",
-		"*://*/*"
+		"tabs"
 	],
-	
+
 	"content_scripts": [
 		{
 			"matches": ["*://*/*"],
@@ -20,13 +20,31 @@
 			"js": ["scripts/content.js"]
 		}
 	],
-	
-	"background_page": "back.html",
+
+	"background": {
+		"scripts": [
+			"scripts/klassjs/klass.js",
+			"services/service.js",
+			"services/gmail.js",
+			"services/reader.js",
+			"services/plus.js",
+			"scripts/event-dispatcher.js",
+			"scripts/preference.js",
+			"scripts/background.js"
+		]
+	},
+
 	"options_page": "views/option/index.html",
-	
+
 	"browser_action": {
 		"default_title": "Terminal for Google",
-		"default_icon": "images/goog-logo-old.png",
-		"popup": "views/popup/index.html"
-	}
+		"default_icon": "images/icon-19.png",
+		"default_popup": "views/popup/index.html"
+	},
+
+	"web_accessible_resources": [
+		"views/option/policy.html",
+		"views/option/services.html",
+		"views/option/about.html"
+	]
 }
