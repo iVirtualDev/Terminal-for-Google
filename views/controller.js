@@ -14,6 +14,8 @@ function Controller($scope) {
 
 	var close = window.close.bind(window);
 
+	window.controller = $scope;
+
 	$scope.icons = services.map(function(service) {
 		var open = function() { service.open(), close(); };
 		var badgeText = '';
@@ -71,9 +73,42 @@ function Controller($scope) {
 		return order.indexOf(a.id) - order.indexOf(b.id);
 	});
 
+	$scope.secure = pref.get('secure');
 	$scope.iconOnly = pref.get('icon-only');
-
 	$scope.columns = pref.get('columns');
+	$scope.gmailEnabled = pref.get('gmail-enabled');
+	$scope.gmailPollEnabled = pref.get('gmail-poll-enabled');
+	$scope.gmailPollInterval = pref.get('gmail-poll-interval');
+	$scope.readerEnabled = pref.get('reader-enabled');
+	$scope.readerPollEnabled = pref.get('reader-poll-enabled');
+	$scope.readerPollInterval = pref.get('reader-poll-interval');
+	$scope.plusEnabled = pref.get('plus-enabled');
+	$scope.plusPollEnabled = pref.get('plus-poll-enabled');
+	$scope.plusPollInterval = pref.get('plus-poll-interval');
+	$scope.urlshortenerEnabled = pref.get('urlshortener-enabled');
+	$scope.shortenButtonEnabled = pref.get('shorten-button-enabled');
+
+	$scope.change = function(key) {
+		var event = document.createEvent('Event');
+		event.initEvent('pref-saved', false, false);
+		event.key = key;
+		window.dispatchEvent(event);
+
+		pref.set('secure', $scope.secure);
+		pref.set('icon-only', $scope.iconOnly);
+		pref.set('columns', +$scope.columns);
+		pref.set('gmail-enabled', $scope.gmailEnabled);
+		pref.set('gmail-poll-enabled', $scope.gmailPollEnabled);
+		pref.set('gmail-poll-interval', +$scope.gmailPollInterval);
+		pref.set('reader-enabled', $scope.readerEnabled);
+		pref.set('reader-poll-enabled', $scope.readerPollEnabled);
+		pref.set('reader-poll-interval', +$scope.readerPollInterval);
+		pref.set('plus-enabled', $scope.plusEnabled);
+		pref.set('plus-poll-enabled', $scope.plusPollEnabled);
+		pref.set('plus-poll-interval', +$scope.plusPollInterval);
+		pref.set('urlshortener-enabled', $scope.urlshortenerEnabled);
+		pref.set('shorten-button-enabled', $scope.shortenButtonEnabled);
+	};
 
 	$scope.openAppsDashboard = function() {
 		chrome.tabs.create({
@@ -86,7 +121,7 @@ function Controller($scope) {
 
 	$scope.openOptionPage = function() {
 		chrome.tabs.create({
-			url: chrome.extension.getURL('/views/option/index.html'),
+			url: chrome.extension.getURL('/views/option.html'),
 			selected: true
 		}, function() {
 			window.close();

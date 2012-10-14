@@ -11,9 +11,9 @@
 	padding: 0;
 }
 
-.icon-list.columns-3.icon-only-false { width: 420px }
-.icon-list.columns-4.icon-only-false { width: 560px }
-.icon-list.columns-5.icon-only-false { width: 700px }
+.icon-list.columns-3 { width: 420px }
+.icon-list.columns-4 { width: 560px }
+.icon-list.columns-5 { width: 700px }
 .icon-list.columns-3.icon-only-true { width: 120px }
 .icon-list.columns-4.icon-only-true { width: 160px }
 .icon-list.columns-5.icon-only-true { width: 200px }
