@@ -35,17 +35,11 @@
 		]
 	},
 
-	"options_page": "views/option/index.html",
+	"options_page": "views/option.html",
 
 	"browser_action": {
 		"default_title": "Terminal for Google",
 		"default_icon": "images/icon-19.png",
-		"default_popup": "views/popup/index.html"
-	},
-
-	"web_accessible_resources": [
-		"views/option/policy.html",
-		"views/option/services.html",
-		"views/option/about.html"
-	]
+		"default_popup": "views/popup.html"
+	}
 }

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html ng-app ng-csp>
+<head>
+	<meta charset="utf-8">
+	<title>Terminal for Google</title>
+	<link rel="stylesheet" href="option.css">
+	<link rel="stylesheet" href="icon-list.css">
+	<script src="/components/AngularJS/angular.js"></script>
+	<script src="controller.js"></script>
+	<script src="option.js"></script>
+</head>
+<body ng-controller="Controller">
+	<div id="nav">
+		<div id="title">
+			<img src="/images/goog-logo-old.png"><span>Options</span>
+		</div>
+		<ul id="nav-list">
+			<li data-nav="#icon-lists" class="selected">
+				<a href="#icon-lists">Services</a>
+			</li>
+			<li data-nav="#about">
+				<a href="#about">About</a>
+			</li>
+		</ul>
+	</div>
+	<div id="contents">
+		<div id="icon-lists">
+			<div class="sect">
+				<div class="sect-title">Security</div>
+				<ul>
+					<li>
+						<input id="secure-box" type="checkbox"
+							ng-model="secure" ng-change="change('secure')">
+						<label for="secure-box">use SSL (https://〜)</label>
+						<span data-key="secure" class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect">
+				<div class="sect-title">Apperance</div>
+				<ul>
+					<li>
+						<input id="icon-only-box" type="checkbox"
+						ng-model="iconOnly"
+						ng-change="change('icon-only')">
+						<label for="icon-only-box">show icon only</label>
+						<span data-key="icon-only" class="msg">saved</span>
+					</li>
+					<li>
+						<label for="columns-box">columns</label>
+						<select id="columns-box" ng-model="columns"
+							ng-change="change('columns')">
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+						<span data-key="columns" class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect">
+				<div class="sect-title">Services</div>
+				<ul id="enabled-services"
+					class="icon-list columns-{{columns}}">
+					<li ng-repeat="icon in icons" data-id="{{icon.id}}"
+						class="icon" ng-show="icon.enabled">
+						<div>
+							<img ng-src="{{icon.image}}">
+							<span>{{icon.name}}</span>
+						</div>
+					</li>
+				</ul>
+				<div class="services-text columns-{{columns}}">
+					↓ drag and drop ↑<br>
+				</div>
+				<ul id="disabled-services"
+					class="icon-list columns-{{columns}}">
+					<li ng-repeat="icon in icons" data-id="{{icon.id}}"
+						class="icon" ng-show="!icon.enabled">
+						<div>
+							<img ng-src="{{icon.image}}">
+							<span>{{icon.name}}</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect" ng-show="gmailEnabled">
+				<div class="sect-title">Gmail</div>
+				<ul>
+					<li>
+						<input type="checkbox" id="gmail-poll-box"
+							ng-model="gmailPollEnabled"
+							ng-change="change('gmail-poll-enabled')">
+						<label for="gmail-poll-box">check unread count</label>
+						<label for="gmail-poll-interval-box">every</label>
+						<select id="gmail-poll-interval-box"
+							ng-model="gmailPollInterval"
+							ng-disabled="!gmailPollEnabled"
+							ng-change="change('gmail-poll-interval')">
+							<option value="300000">5min</option>
+							<option value="600000">10min</option>
+							<option value="1800000">30min</option>
+						</select>
+						<span data-key="gmail-poll-enabled gmail-poll-interval"
+							class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect" ng-show="readerEnabled">
+				<div class="sect-title">Google Reader</div>
+				<ul>
+					<li>
+						<input type="checkbox" id="reader-poll-box"
+							ng-model="readerPollEnabled"
+							ng-change="change('reader-poll-enabled')">
+						<label for="reader-poll-box">check unread count</label>
+						<label for="reader-poll-interval-box">every</label>
+						<select id="reader-poll-interval-box"
+							ng-model="readerPollInterval"
+							ng-disabled="!readerPollEnabled"
+							ng-change="change('reader-poll-interval')">
+							<option value="300000">5min</option>
+							<option value="600000">10min</option>
+							<option value="1800000">30min</option>
+						</select>
+						<span
+							data-key="reader-poll-enabled reader-poll-interval"
+							class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect" ng-show="plusEnabled">
+				<div class="sect-title">Google+</div>
+				<ul>
+					<li>
+						<input type="checkbox" id="plus-poll-box"
+							ng-model="plusPollEnabled"
+							ng-change="change('plus-poll-enabled')">
+						<label for="plus-poll-box">check unread count</label>
+						<label for="plus-poll-interval-box">every</label>
+						<select id="plus-poll-interval-box"
+							ng-model="plusPollInterval"
+							ng-disabled="!plusPollEnabled"
+							ng-change="change('plus-poll-interval')">
+							<option value="300000">5min</option>
+							<option value="600000">10min</option>
+							<option value="1800000">30min</option>
+						</select>
+						<span data-key="plus-poll-enabled plus-poll-interval"
+							class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect" ng-show="urlshortenerEnabled">
+				<div class="sect-title">Google URL Shortener</div>
+				<ul>
+					<li>
+						<input type="checkbox" id="shorten-button-box"
+							ng-model="shortenButtonEnabled"
+							ng-change="change('shorten-button-enabled')">
+						<label for="shorten-button-box">
+							enable "shorten" button
+						</label>
+						<span data-key="shorten-button-enabled"
+							class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="about">
+			<div class="sect">
+				<div class="sect-title">
+					<a href="https://chrome.google.com/webstore/detail/denbapicipbiplggmfebiogiphopgjca">Terminal for Google</a>
+				</div>
+				<p>
+					This extension is created by
+					<a href="http://twitter.com/chick307">chick307</a>
+					&lt;<a href="mailto:chick307@gmail.com">chick307@gmail.com</a>&gt;.<br>
+					You can fork this extension on
+					<a href="https://github.com/Chick307/Terminal-for-Google">
+						github</a>.
+				</p>
+			</div>
+			<div class="sect">
+				<div class="sect-title">
+					<a href="http://fav.me/d4h6dg9">Google JFK Icons</a>
+				</div>
+				<p>
+					The all of the images are provided by
+					<a href="http://carlosjj.deviantart.com/">Carlos</a>.
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

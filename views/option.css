@@ -1,0 +1,160 @@
+/*
+ * Copyright (c) 2012 Chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT Licence.
+ * http://opensource.org/licenses/MIT
+ */
+
+body {
+	margin: 0;
+	min-width: 960px;
+	color: #444;
+	-webkit-user-select: none;
+}
+
+#nav {
+	box-sizing: border-box;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	padding: 16px 0 16px 24px;
+	width: 192px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	font: small serif;
+	background: #FFF;
+	box-shadow: 0 0 8px 8px #FFF;
+	z-index: 10;
+}
+
+#nav > #title {
+	width: 100%;
+	height: 32px;
+}
+
+#nav > #title > img {
+	margin-right: 0.5em;
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+#nav > #title > span {
+	line-height: 32px;
+	vertical-align: middle;
+	font-size: medium;
+	font-weight: bold;
+}
+
+#nav > ul {
+	padding: 0;
+}
+
+#nav > ul > li {
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	margin: 4px 0;
+	padding: 0 16px;
+	width: 100%;
+	height: 20px;
+}
+
+#nav > ul > li.selected {
+	background: -webkit-canvas(triangle) left center no-repeat;
+}
+
+#nav > ul > li > a {
+	display: block;
+	position: relative;
+	color: #888;
+	line-height: 20px;
+	text-decoration: none;
+	-webkit-user-drag: none;
+}
+
+#nav > ul > li > a:hover { text-decoration: underline; }
+#nav > ul > li > a:active { top: 1px; }
+#nav > ul > li.selected > a { color: #444; }
+
+#contents {
+	box-sizing: border-box;
+	padding: 0 0 0 192px;
+	width: 100%;
+}
+
+#contents > div {
+	display: none;
+	padding: 24px;
+}
+
+#contents > div:target {
+	display: block;
+}
+
+.sect {
+	font-size: small;
+	font-family: serif;
+	padding: 0 1.5em;
+	line-height: 2em;
+}
+
+.sect > .sect-title {
+	margin: 0 0 1.5em -1.5em;
+	font-weight: bold;
+}
+
+.sect + .sect {
+	margin-top: 3em;
+}
+
+.sect ul {
+	padding: 0;
+}
+
+.sect li:not(.icon) {
+	display: block;
+}
+
+.msg {
+	display: inline-block;
+	margin: 0 0.5em;
+	padding: 0 1em;
+	color: #090;
+	font-weight: bold;
+	opacity: 0;
+	-webkit-transition: opacity 0.1s;
+}
+
+.msg.saved {
+	opacity: 1;
+}
+
+ul.icon-list {
+	border-radius: 5px;
+	min-height: 40px;
+	background: #FFF;
+	-webkit-transition: all 0.3s;
+	padding-bottom: 41px;
+}
+
+.dragging ul.icon-list {
+	background: #CDF;
+	box-shadow: 0 0 0 1px #BCE;
+}
+
+ul.icon-list > li.icon {
+	-webkit-user-drag: element;
+	cursor: move;
+}
+
+ul.icon-list > li.icon:-webkit-drag > div {
+	background: #FFF;
+	opacity: 0.7;
+}
+
+.services-text { text-align: center; color: #666 }
+.services-text.columns-3 { width: 420px }
+.services-text.columns-4 { width: 560px }
+.services-text.columns-5 { width: 700px }
