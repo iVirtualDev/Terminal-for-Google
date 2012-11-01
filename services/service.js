@@ -276,6 +276,11 @@ var serviceInfo = [{
 	name: 'Panoramio',
 	url: 'http://www.panoramio.com',
 	icon: 'images/goog-panoramio-old.png'
+}, {
+	id: 'scholar',
+	name: 'Google Scholar',
+	url: 'http://scholar.google.com',
+	icon: 'images/scholar-64.png'
 }];
 
 
