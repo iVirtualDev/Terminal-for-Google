@@ -30,6 +30,7 @@
 			"services/plus.js",
 			"scripts/event-dispatcher.js",
 			"scripts/preference.js",
+			"scripts/badge.js",
 			"scripts/background.js"
 		]
 	},

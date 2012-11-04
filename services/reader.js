@@ -93,7 +93,7 @@ Object.defineProperties(GoogleReader.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			this._unreadCount = badge.reader = Number(value);
+			badge.set('reader', this._unreadCount = Number(value));
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */

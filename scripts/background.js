@@ -38,102 +38,10 @@ var pref = new Preference({
 	}
 });
 
-
-var badge = {
-	_listener: [],
-	onPropertyChange: {
-		addListener: function(listener){
-			badge._listener.push(listener);
-		},
-		removeListener: function(listener){
-			var i = badge._listener.indexOf(listener);
-			if(i > -1)
-				badge._listener.splice(i, 1);
-		},
-		hasListener: function(){
-			return badge._listener.indexOf(listener) !== -1;
-		}
-	},
-	_gmail: null,
-	_reader: null,
-	_plus: null,
-	setColor: function(r, g, b, a){
-		chrome.browserAction.setBadgeBackgroundColor({
-			color: [
-				Math.min(r, 255),
-				Math.min(g, 255),
-				Math.min(b, 255),
-				Math.min(a, 255)
-			]
-		});
-	},
-	setText: function(text){
-		chrome.browserAction.setBadgeText({text: text || ''});
-	},
-	refresh: function(){
-		var r = 0, g = 0, b = 0, text = null;
-		
-		if(this._gmail){
-			r += 208;
-			b += 24;
-			text = this._gmail;
-		}
-		
-		if(this._reader){
-			g += 24;
-			b += 208;
-			text = text? '!': this._reader;
-		}
-
-		if(this._plus){
-			r += 255;
-			g += 8;
-			b += 8;
-			text = text? '!': this._plus;
-		}
-
-		if(r > 255)
-			r = 255;
-		if(g > 255)
-			g = 255;
-		if(b > 255)
-			b = 255;
-		
-		this.setColor(r, g, b, 255);
-		this.setText(text);
-		
-		this._listener.forEach(function(listener){
-			listener.call(badge);
-		});
-	},
-	get gmail(){
-		return this._gmail;
-	},
-	set gmail(value){
-		this._gmail = (value == 0 || value == null)? null: String(value);
-		this.refresh();
-	},
-	get reader(){
-		return this._reader;
-	},
-	set reader(value){
-		this._reader = (value == 0 || value == null)? null: String(value);
-		this.refresh();
-	},
-	get plus(){
-		return this._plus;
-	},
-	set plus(value){
-		this._plus = (value == 0 || value == null)? null: String(value);
-		this.refresh();
+var badge = new Badge({
+	keys: {
+		gmail: {color: [208, 0, 24]},
+		reader: {color: [0, 24, 208]},
+		plus: {color: [255, 8, 8]}
 	}
-};
-
-badge.onPropertyChange.addListener(function(){
-	var e = document.createEvent('Event');
-	e.initEvent('badge-changed', false, false);
-	e.value = badge;
-	chrome.extension.getViews().forEach(function(view){
-		view.dispatchEvent(e);
-	});
 });

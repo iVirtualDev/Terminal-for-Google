@@ -110,7 +110,7 @@ Object.defineProperties(Gmail.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			this._unreadCount = badge.gmail = Number(value);
+			badge.set('gmail', this._unreadCount = Number(value));
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */
