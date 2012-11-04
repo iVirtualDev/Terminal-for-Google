@@ -28,7 +28,6 @@ files = (Query(gitLsFiles.stdout)
 	.where(lambda fn: fn != 'SConstruct'))
 
 files = files.tolist();
-files.append('scripts/klassjs/klass.js')
 
 Command('a.zip', files, 'zip $TARGET $SOURCES')
 

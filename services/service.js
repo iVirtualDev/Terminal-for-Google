@@ -1,6 +1,5 @@
-
-var Service = klass.define({
-	constructor: function Service(args){
+var Service = (function() {
+	var ctor = function Service(args) {
 		Object.defineProperties(this, {
 			id: {value: args.id},
 			name: {value: args.name},
@@ -31,8 +30,12 @@ var Service = klass.define({
 				});
 			}.bind(this), false);
 		}
-	},
-	enable: function(){
+	};
+
+	var proto = ctor.prototype = {};
+	proto.constructor = ctor;
+
+	proto.enable = function enable() {
 		if(this.isEnabled)
 			return;
 
@@ -59,8 +62,9 @@ var Service = klass.define({
 		this.onEnabled.forEach(function(onEnabled){
 			onEnabled.call(this);
 		}, this);
-	},
-	disable: function(){
+	};
+
+	proto.disable = function disable() {
 		if(!this.isEnabled)
 			return;
 
@@ -77,8 +81,9 @@ var Service = klass.define({
 		this.onDisabled.forEach(function(onDisabled){
 			onDisabled.call(this);
 		}, this);
-	},
-	open: function(){
+	};
+
+	proto.open = function open() {
 		var secure = pref.get('secure');
 		var url = this.urlContainsScheme? this.url:
 			(secure? 'https://': 'http://') + this.url;
@@ -95,8 +100,10 @@ var Service = klass.define({
 			// Create a new tab.
 			chrome.tabs.create({url: url, selected: true});
 		});
-	}
-});
+	};
+
+	return ctor;
+}());
 
 
 var serviceInfo = [{

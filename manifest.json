@@ -24,7 +24,6 @@
 
 	"background": {
 		"scripts": [
-			"scripts/klassjs/klass.js",
 			"services/service.js",
 			"services/gmail.js",
 			"services/reader.js",
