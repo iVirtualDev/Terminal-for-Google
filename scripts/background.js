@@ -35,7 +35,8 @@ pref.update({
 	'plus-enabled': false,
 	'plus-poll-enabled': true,
 	'plus-poll-interval': 1000 * 60 * 5,
-	'panoramio-enabled': false
+	'panoramio-enabled': false,
+	'scholar-enabled': false
 }, false);
 
 var badge = {
