@@ -17,7 +17,7 @@ void function() {
 	context.fill();
 }();
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('load', function() {
 	if (document.querySelector('#contents > div:target'))
 		update();
 	else
@@ -35,6 +35,17 @@ window.addEventListener('DOMContentLoaded', function() {
 			li.classList.add('selected');
 		}
 	}
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+	document.addEventListener('click', function(event) {
+		var target = event.target;
+		if (target.nodeName.toLowerCase() === 'a' &&
+			target.href.indexOf(chrome.extension.getURL('')) !== 0) {
+			chrome.tabs.create({url: target.href, selected: true});
+			event.preventDefault();
+		}
+	});
 });
 
 void function() {
