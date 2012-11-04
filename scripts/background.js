@@ -1,43 +1,43 @@
-var pref = new Preference({prefix: 'pref-'});
+var pref = new Preference({
+	prefix: 'pref-',
+	defaultValues: {
+		'secure': true,
+		'icon-only': false,
+		'secure': true,
+		'icon-only': false,
+		'columns': 3,
+		'voice-enabled': false,
+		'bookmarks-enabled': false,
+		'gmail-poll-interval': 1000 * 60 * 5,
+		'gmail-poll-enabled': true,
+		'reader-poll-interval': 1000 * 60 * 5,
+		'reader-poll-enabled': true,
+		'urlshortener-enabled': false,
+		'shorten-button-enabled': true,
+		'music-enabled': false,
+		'knol-enabled': false,
+		'finance-enabled': false,
+		'moderator-enabled': false,
+		'books-enabled': false,
+		'webstore-enabled': false,
+		'plus-enabled': false,
+		'plus-poll-enabled': true,
+		'plus-poll-interval': 1000 * 60 * 5,
+		'panoramio-enabled': false,
+		'scholar-enabled': false
+	},
+	onChange: function(data) {
+		var event = document.createEvent('Event');
+		event.initEvent('pref-changed', false, false);
+		event.key = data.key;
+		event.value = data.value;
 
-pref.onChange.addListener(function(data){
-	var event = document.createEvent('Event');
-	event.initEvent('pref-changed', false, false);
-	event.key = data.key;
-	event.value = data.value;
-
-	chrome.extension.getViews().forEach(function(view){
-		view.dispatchEvent(event);
-	});
+		chrome.extension.getViews().forEach(function(view){
+			view.dispatchEvent(event);
+		});
+	}
 });
 
-// デフォルトの設定値
-pref.update({
-	'secure': true,
-	'icon-only': false,
-	'secure': true,
-	'icon-only': false,
-	'columns': 3,
-	'voice-enabled': false,
-	'bookmarks-enabled': false,
-	'gmail-poll-interval': 1000 * 60 * 5,
-	'gmail-poll-enabled': true,
-	'reader-poll-interval': 1000 * 60 * 5,
-	'reader-poll-enabled': true,
-	'urlshortener-enabled': false,
-	'shorten-button-enabled': true,
-	'music-enabled': false,
-	'knol-enabled': false,
-	'finance-enabled': false,
-	'moderator-enabled': false,
-	'books-enabled': false,
-	'webstore-enabled': false,
-	'plus-enabled': false,
-	'plus-poll-enabled': true,
-	'plus-poll-interval': 1000 * 60 * 5,
-	'panoramio-enabled': false,
-	'scholar-enabled': false
-}, false);
 
 var badge = {
 	_listener: [],

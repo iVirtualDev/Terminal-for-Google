@@ -1,68 +1,86 @@
+/*
+ * Copyright (c) 2012 Chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT Licence.
+ * http://opensource.org/licenses/MIT
+ */
 
-function Preference(args){
-    if(!(this instanceof Preference))
-        throw new TypeError();
+var Preference = (function() {
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var getItem = Storage.prototype.getItem;
+	var setItem = Storage.prototype.setItem;
+	var removeItem = Storage.prototype.removeItem;
 
-    if(args == null)
-        args = {};
+	var ctor = function Preference(args) {
+		if (!(this instanceof ctor))
+			throw new TypeError('Constructor cannot');
 
-    this._storage = Object.prototype.hasOwnProperty.call(args, 'storage')?
-        args.storage: localStorage;
-    this._cache = {};
+		var channel = new MessageChannel();
+		this._onChangePort = channel.port1;
+		this.onChange = new EventDispatcher(this, channel.port2);
 
-    this.prefix =
-        Object.prototype.hasOwnProperty.call(args, 'prefix')? args.prefix: '';
-    this.suffix =
-        Object.prototype.hasOwnProperty.call(args, 'suffix')? args.suffix: '';
+		if (args == null) {
+			this._key = function _key(key) { return key };
+			this._storage = localStorage;
+		} else {
+			var prefix = args.prefix || '', suffix = args.suffix || '';
+			this._key = function _key(key) { return prefix + key + suffix };
+			this._storage = args.storage || localStorage;
+			if (args.defaultValues)
+				this.update(args.defaultValues, false);
+			if (args.onChange)
+				this.onChange.addListener(args.onChange);
+		}
+	};
 
-    var channel = new MessageChannel();
-    this._port = channel.port1;
-    this.onChange = new EventDispatcher(this, channel.port2);
-}
+	var proto = ctor.prototype = {};
+	proto.constructor = ctor;
 
-Preference.prototype.get = function(key, defaultValue){
-    if(Object.prototype.hasOwnProperty.call(this._cache, key))
-        return this._cache[key];
-    var value = Storage.prototype.getItem.call(this._storage,
-        this.prefix + key + this.suffix);
-    if(value == null)
-        return defaultValue;
-    return this._cache[key] = JSON.parse(value);
-};
+	proto.get = function get(key, defaultValue) {
+		if (!this.has(key)) {
+			return defaultValue;
+		} else {
+			var value = getItem.call(this._storage, this._key(key));
+			return JSON.parse(value);
+		}
+	};
 
-Preference.prototype.set = function(key, value){
-    if(this._cache[key] === value)
-        return value;
-    Storage.prototype.setItem.call(this._storage,
-        this.prefix + key + this.suffix, JSON.stringify(value));
-    this._cache[key] = value;
-    this._port.postMessage({key: key, value: value});
-    return value;
-};
+	proto.set = function set(key, value) {
+		setItem.call(this._storage, this._key(key), JSON.stringify(value));
+		this._onChangePort.postMessage({key: key, value: value});
+		return value;
+	};
 
-Preference.prototype.add = function(key, value){
-    var val = this.get(key);
-    if(typeof val === 'undefined')
-        return this.set(key, value);
-    return val;
-};
+	proto.add = function add(key, value) {
+		var v = this.get(key, void 0);
+		if (v === void 0)
+			return this.set(key, value);
+		return v;
+	};
 
-Preference.prototype.update = function(keyValues, overwrite/*=true*/){
-    var result = {}, p = (overwrite == null || overwrite)? 'set': 'add';
-    Object.keys(keyValues).forEach(function(key){
-        result[key] = this[p](key, keyValues[key]);
-    }, this);
-    return result;
-};
+	proto.update = function update(keyValues, overwrite) {
+		if (overwrite == null)
+			overwrite = true;
 
-Preference.prototype.has = function(key){
-    return Object.prototype.hasOwnProperty(key) ||
-        (this.prefix + key + this.suffix) in this._storage;
-};
+		var result = {};
+		Object.keys(keyValues).forEach(overwrite ? function(key) {
+			result[key] = this.set(key, keyValues[key]);
+		}: function(key) {
+			result[key] = this.add(key, keyValues[key]);
+		}, this);
+		return result;
+	};
 
-Preference.prototype.remove = function(key){
-    delete this._cache[key];
-    Storage.prototype.removeItem.call(this._storage,
-        this.prefix + key + this.suffix);
-};
+	proto.has = function has(key) {
+		return hasOwnProperty.call(this._storage, this._key(key));
+	};
 
+	proto.remove = function remove(key) {
+		if (!this.has(key))
+			return false;
+		removeItem.call(this._storage, this._key(key));
+		return true;
+	};
+
+	return ctor;
+}());
