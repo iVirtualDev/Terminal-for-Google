@@ -38,8 +38,8 @@ var Badge = (function() {
 	};
 
 	proto.set = function set(key, value) {
-		if (this._values[key] == null)
-			return;
+		if (value === 0 || value === '' || value === void 0)
+			value = null;
 		this._values[key].value = value;
 		this._refresh();
 		this._onChangePort.postMessage({key: key, value: value});
@@ -48,10 +48,10 @@ var Badge = (function() {
 	proto._refresh = function _refresh() {
 		var values = Object.keys(this._values).filter(function(key) {
 			var value = this._values[key].value;
-			return value != null && value !== 0 && value !== '';
+			return value !== null;
 		}, this).map(function(key) {
 			return {
-				color: this._values[key].color,
+				color: this._values[key].color || [96, 96, 96],
 				value: this._values[key].value
 			};
 		}, this);
@@ -59,7 +59,9 @@ var Badge = (function() {
 		if (values.length === 0) {
 			chrome.browserAction.setBadgeText({text: ''});
 		} else if (values.length === 1) {
-			chrome.browserAction.setBadgeText({text: values[0].value});
+			chrome.browserAction.setBadgeText({
+				text: '' + values[0].value
+			});
 
 			chrome.browserAction.setBadgeBackgroundColor({
 				color: values[0].color.concat([255])
