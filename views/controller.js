@@ -89,10 +89,7 @@ function Controller($scope) {
 	$scope.shortenButtonEnabled = pref.get('shorten-button-enabled');
 
 	$scope.change = function(key) {
-		var event = document.createEvent('Event');
-		event.initEvent('pref-saved', false, false);
-		event.key = key;
-		window.dispatchEvent(event);
+		dispatchSaveEvent(key);
 
 		pref.set('secure', $scope.secure);
 		pref.set('icon-only', $scope.iconOnly);
@@ -108,6 +105,44 @@ function Controller($scope) {
 		pref.set('plus-poll-interval', +$scope.plusPollInterval);
 		pref.set('urlshortener-enabled', $scope.urlshortenerEnabled);
 		pref.set('shorten-button-enabled', $scope.shortenButtonEnabled);
+	};
+
+	$scope.mailPageEnabled = pref.get('mail-page-enabled');
+	$scope.mailPageEnabledChange = function() {
+		pref.set('mail-page-enabled', $scope.mailPageEnabled);
+		dispatchSaveEvent('mail-page-enabled');
+	};
+
+	$scope.mailLinkEnabled = pref.get('mail-link-enabled');
+	$scope.mailLinkEnabledChange = function() {
+		pref.set('mail-link-enabled', $scope.mailLinkEnabled);
+		dispatchSaveEvent('mail-link-enabled');
+	};
+
+	$scope.mailTextEnabled = pref.get('mail-text-enabled');
+	$scope.mailTextEnabledChange = function() {
+		pref.set('mail-text-enabled', $scope.mailTextEnabled);
+		dispatchSaveEvent('mail-text-enabled');
+	};
+
+	$scope.blogEnabled = pref.get('blog-enabled');
+
+	$scope.blogPageEnabled = pref.get('blog-page-enabled');
+	$scope.blogPageEnabledChange = function() {
+		pref.set('blog-page-enabled', $scope.blogPageEnabled);
+		dispatchSaveEvent('blog-page-enabled');
+	};
+
+	$scope.blogLinkEnabled = pref.get('blog-link-enabled');
+	$scope.blogLinkEnabledChange = function() {
+		pref.set('blog-link-enabled', $scope.blogLinkEnabled);
+		dispatchSaveEvent('blog-link-enabled');
+	};
+
+	$scope.blogTextEnabled = pref.get('blog-text-enabled');
+	$scope.blogTextEnabledChange = function() {
+		pref.set('blog-text-enabled', $scope.blogTextEnabled);
+		dispatchSaveEvent('blog-text-enabled');
 	};
 
 	$scope.openAppsDashboard = function() {
@@ -127,6 +162,13 @@ function Controller($scope) {
 			window.close();
 		});
 	};
+
+	function dispatchSaveEvent(key) {
+		var event = document.createEvent('Event');
+		event.initEvent('pref-saved', false, false);
+		event.key = key;
+		window.dispatchEvent(event);
+	}
 
 	function shortenURL(callback) {
 		chrome.tabs.getSelected(null, function(tab) {
