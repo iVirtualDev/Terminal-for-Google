@@ -9,17 +9,17 @@ function Gmail(){
 			{
 				title: 'Mail this page',
 				context: 'page',
-				action: 'gmail'
+				id: 'mail-page'
 			},
 			{
 				title: 'Mail this link',
 				context: 'link',
-				action: 'gmail'
+				id: 'mail-link'
 			},
 			{
 				title: 'Mail this text',
 				context: 'selection',
-				action: 'gmail'
+				id: 'mail-text'
 			}
 		]
 	});
