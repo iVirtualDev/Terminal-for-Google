@@ -5,11 +5,11 @@
  * http://opensource.org/licenses/MIT
  */
 
-var executed;
 void function() {
-	if (executed)
+	if (document.documentElement.hasAttribute('x-terminal-for-google'))
 		return;
-	executed = true;
+
+	document.documentElement.setAttribute('x-terminal-for-google', '');
 
 	var GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&';
 	var BLOGGER_URL = 'http://www.blogger.com/blog-this.g?';
