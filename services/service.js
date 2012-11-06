@@ -175,10 +175,7 @@ var serviceInfo = [{
 	url: 'www.google.com/adsense',
 	icon: 'images/goog-adsense-old.png'
 }, {
-	id: 'appengine',
-	name: 'AppEngine',
-	url: 'appengine.google.com',
-	icon: 'images/goog-app-engine.png'
+	id: 'appengine'
 }, {
 	id: 'picasa',
 	name: 'Picasa',
@@ -244,9 +241,7 @@ var serviceInfo = [{
 	url: 'http://www.google.com/bookmarks',
 	icon: 'images/goog-bookmarks.png'
 }, {
-	id: 'urlshortener',
-	name: 'Google URL Shortener',
-	url: 'http://goo.gl'
+	id: 'urlshortener'
 }, {
 	id: 'music',
 	name: 'music beta',
@@ -299,6 +294,8 @@ window.addEventListener('load', function(){
 			case 'gmail': return new Gmail();
 			case 'reader': return new GoogleReader();
 			case 'plus': return new GooglePlus();
+			case 'appengine': return new AppEngine();
+			case 'urlshortener': return new UrlShortener();
 			default: return new Service(args);
 		}
 	});

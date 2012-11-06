@@ -97,6 +97,19 @@ function Gmail(){
 
 Gmail.prototype = Object.create(Service.prototype);
 Object.defineProperties(Gmail.prototype, {
+	badgeText: {
+		get: function() {
+			return this.unreadCount === 0 ?  '' :
+				pref.get('icon-only') && 99 < this.unreadCount ? '!' :
+				this.unreadCount.toString();
+		}
+	},
+	badgeCommand: {
+		value: function(callback) {
+			this.open();
+			callback();
+		}
+	},
 	/** 未読のフィードのURL */
 	feedURL: {
 		get: function(){

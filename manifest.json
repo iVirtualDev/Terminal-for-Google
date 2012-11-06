@@ -28,6 +28,8 @@
 			"services/gmail.js",
 			"services/reader.js",
 			"services/plus.js",
+			"scripts/services/appengine.js",
+			"scripts/services/urlshortener.js",
 			"scripts/event-dispatcher.js",
 			"scripts/preference.js",
 			"scripts/badge.js",

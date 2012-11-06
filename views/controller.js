@@ -17,49 +17,20 @@ function Controller($scope) {
 	window.controller = $scope;
 
 	$scope.icons = services.map(function(service) {
-		var open = function() { service.open(), close(); };
-		var badgeText = '';
-		var badgeCommand = null;
-
-		switch (service.id) {
-			case 'plus':
-				badgeText = service.badgeText;
-				badgeCommand = function() { service.badgeCommand(close) };
-				break;
-			case 'gmail':
-			case 'reader':
-				badgeText = badge.get(service.id, '');
-				if (pref.get('icon-only') && 99 < badgeText)
-					badgeText = '!';
-				badgeCommand = open;
-				break;
-			case 'appengine':
-				badgeText = pref.get('icon-only') ? '?' : 'status';
-				badgeCommand = function() {
-					var url = (pref.get('secure') ? 'https://' : 'http://') +
-						'code.google.com/status/appengine';
-					chrome.tabs.create({
-						url: url,
-						selected: true
-					}, close);
-				};
-				break;
-			case 'urlshortener':
-				if (!pref.get('shorten-button-enabled'))
-					break;
-				badgeText = pref.get('icon-only') ? '+' : 'shorten';
-				badgeCommand = shortenURL.bind(null, close);
-				break;
-		}
-
 		return {
 			id: service.id,
 			enabled: service.isEnabled,
 			name: service.name,
-			image: '/' + service.icon,
-			badgeText: badgeText,
-			badgeCommand: badgeCommand,
-			open: open
+			image: chrome.extension.getURL(service.icon),
+			badgeText: service.badgeText == null ? '' : service.badgeText,
+			badgeCommand: function badgeCommand() {
+				if (service.badgeCommand != null)
+					service.badgeCommand(close);
+			},
+			open: function open() {
+				service.open();
+				close();
+			}
 		};
 	}).sort(function(a, b) {
 		return order.indexOf(a.id) - order.indexOf(b.id);
@@ -160,34 +131,5 @@ function Controller($scope) {
 		event.initEvent('pref-saved', false, false);
 		event.key = key;
 		window.dispatchEvent(event);
-	}
-
-	function shortenURL(callback) {
-		chrome.tabs.getSelected(null, function(tab) {
-			chrome.tabs.create({
-				url: 'http://goo.gl',
-				selected: true
-			}, function(newTab) {
-				execute(tab, newTab);
-			});
-		});
-
-		function execute(tab, newTab) {
-			var code = 'void ' + function() {
-				if (window.document && document.readyState === 'complete')
-					a();
-				else
-					window.addEventListener('load', a);
-				function a() {
-					setTimeout(function() {
-						document.querySelector('input[type=text]').value =
-							"%TAB_URL%";
-					}, 2000);
-				}
-			}.toString().replace('%TAB_URL%', tab.url) + '()';
-
-			chrome.tabs.executeScript(newTab.id, {code: code});
-			callback();
-		}
 	}
 }

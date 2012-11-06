@@ -80,6 +80,19 @@ function GoogleReader(){
 
 GoogleReader.prototype = Object.create(Service.prototype);
 Object.defineProperties(GoogleReader.prototype, {
+	badgeText: {
+		get: function() {
+			return this.unreadCount === 0 ?  '' :
+				pref.get('icon-only') && 99 < this.unreadCount ? '!' :
+				this.unreadCount.toString();
+		}
+	},
+	badgeCommand: {
+		value: function(callback) {
+			this.open();
+			callback();
+		}
+	},
 	/** 未読数を返すJSONのURL */
 	jsonURL: {
 		get: function(){
