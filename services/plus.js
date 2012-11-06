@@ -80,6 +80,20 @@ function GooglePlus(){
 
 GooglePlus.prototype = Object.create(Service.prototype);
 Object.defineProperties(GooglePlus.prototype, {
+	badgeText: {
+		get: function() {
+			return this.unreadCount === 0 ?  '' :
+				pref.get('icon-only') && 99 < this.unreadCount ? '!' :
+				this.unreadCount.toString();
+		}
+	},
+	badgeCommand: {
+		value: function(callback) {
+			var url = (pref.get('secure')? 'https://': 'http://') +
+				'plus.google.com/notifications/all';
+			chrome.tabs.create({url: url, selected: true}, callback);
+		}
+	},
 	/** 未読数を返すAPIのURL */
 	apiURL: {
 		get: function(){

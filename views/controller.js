@@ -23,16 +23,8 @@ function Controller($scope) {
 
 		switch (service.id) {
 			case 'plus':
-				badgeText = badge.get(service.id, '');
-				if (pref.get('icon-only') && 99 < badgeText)
-					badgeText = '!';
-				badgeCommand = function() {
-					var url = 'plus.google.com/notifications/all';
-					chrome.tabs.create({
-						url: url,
-						selected: true
-					}, close);
-				};
+				badgeText = service.badgeText;
+				badgeCommand = function() { service.badgeCommand(close) };
 				break;
 			case 'gmail':
 			case 'reader':
