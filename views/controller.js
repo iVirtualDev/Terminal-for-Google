@@ -23,7 +23,7 @@ function Controller($scope) {
 
 		switch (service.id) {
 			case 'plus':
-				badgeText = badge[service.id] || '';
+				badgeText = badge.get(service.id, '');
 				if (pref.get('icon-only') && 99 < badgeText)
 					badgeText = '!';
 				badgeCommand = function() {
@@ -36,7 +36,7 @@ function Controller($scope) {
 				break;
 			case 'gmail':
 			case 'reader':
-				badgeText = badge[service.id] || '';
+				badgeText = badge.get(service.id, '');
 				if (pref.get('icon-only') && 99 < badgeText)
 					badgeText = '!';
 				badgeCommand = open;

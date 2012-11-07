@@ -93,7 +93,7 @@ Object.defineProperties(GooglePlus.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			this._unreadCount = badge.plus = Number(value);
+			badge.set('plus', this._unreadCount = Number(value));
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */
