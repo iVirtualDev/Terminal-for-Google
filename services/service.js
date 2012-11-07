@@ -5,12 +5,10 @@ var Service = (function() {
 			name: {value: args.name},
 			url: {value: args.url},
 			icon: {value: args.icon || 'images/goog-logo.png'},
-			menus: {value: args.menus || []},
 			urlContainsScheme: {value: /^[a-z]+:/.test(args.url)},
 			onEnabled: {value: []},
 			onDisabled: {value: []},
-			isEnabled: {value: false, writable: true},
-			menuIds: {value: [], writable: true}
+			isEnabled: {value: false, writable: true}
 		});
 
 		// Call this.enable() asynchronously, if this service has been enabled.
@@ -22,14 +20,35 @@ var Service = (function() {
 			}.bind(this);
 		}
 
-		// Remove the all context menus, when the background page is unloaded.
-		if(args.menus && args.menus.length > 0){
-			window.addEventListener('unload', function(){
-				this.menuIds.forEach(function(menuId){
+		var menus = args.menus || [];
+		menus.forEach(function(menu){
+			var menuId = null;
+
+			pref.watch([
+				args.id + '-enabled',
+				menu.id + '-enabled'
+			], function(serviceEnabled, menuEnabled) {
+				if (serviceEnabled && menuEnabled) {
+					if (menuId === null) {
+						menuId = chrome.contextMenus.create({
+							type: menu.type || 'normal',
+							title: menu.title,
+							contexts: [menu.context],
+							onclick: function(info, tab) {
+								chrome.tabs.sendRequest(tab.id, {
+									id: menu.id,
+									text: info.selectionText,
+									link: info.linkUrl
+								});
+							}
+						});
+					}
+				} else if (menuId !== null) {
 					chrome.contextMenus.remove(menuId);
-				});
-			}.bind(this), false);
-		}
+					menuId = null;
+				}
+			});
+		});
 	};
 
 	var proto = ctor.prototype = {};
@@ -41,22 +60,6 @@ var Service = (function() {
 
 		this.isEnabled = true;
 		pref.set(this.id + '-enabled', true);
-
-		// Create context menus.
-		this.menuIds = this.menus.map(function(menu){
-			return chrome.contextMenus.create({
-				type: menu.type || 'normal',
-				title: menu.title,
-				contexts: [menu.context],
-				onclick: function(info, tab){
-					chrome.tabs.sendRequest(tab.id, {
-						action: menu.action,
-						info: info,
-						tab: tab
-					});
-				}
-			});
-		});
 
 		// Emit onEnabled event.
 		this.onEnabled.forEach(function(onEnabled){
@@ -70,12 +73,6 @@ var Service = (function() {
 
 		this.isEnabled = false;
 		pref.set(this.id + '-enabled', false);
-
-		// Remove context menus.
-		this.menuIds.forEach(function(menuId){
-			chrome.contextMenus.remove(menuId);
-		});
-		this.menuIds = [];
 
 		// Emit onDisabled event.
 		this.onDisabled.forEach(function(onDisabled){
@@ -155,19 +152,23 @@ var serviceInfo = [{
 	name: 'Blogger',
 	url: 'www.blogger.com/home',
 	icon: 'images/goog-blogger.png',
-	menus: [{
-		title: 'Blog this page',
-		context: 'page',
-		action: 'blogger'
-	}, {
-		title: 'Blog this link',
-		context: 'link',
-		action: 'blogger'
-	}, {
-		title: 'Blog this text',
-		context: 'selection',
-		action: 'blogger'
-	}]
+	menus: [
+		{
+			title: 'Blog this page',
+			context: 'page',
+			id: 'blog-page'
+		},
+		{
+			title: 'Blog this link',
+			context: 'link',
+			id: 'blog-link'
+		},
+		{
+			title: 'Blog this text',
+			context: 'selection',
+			id: 'blog-text'
+		}
+	]
 }, {
 	id: 'adsense',
 	name: 'Adsense',

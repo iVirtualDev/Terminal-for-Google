@@ -107,6 +107,36 @@
 						<span data-key="gmail-poll-enabled gmail-poll-interval"
 							class="msg">saved</span>
 					</li>
+					<li>
+						<input type="checkbox" id="mail-page-box"
+							ng-model="mailPageEnabled"
+							ng-change="mailPageEnabledChange()">
+						<label for="mail-page-box">
+							Enable contextual menu in web pages
+						</label>
+						<span data-key="mail-page-enabled"
+							class="msg">saved</span>
+					</li>
+					<li>
+						<input type="checkbox" id="mail-link-box"
+							ng-model="mailLinkEnabled"
+							ng-change="mailLinkEnabledChange()">
+						<label for="mail-link-box">
+							Enable contextual menu in links
+						</label>
+						<span data-key="mail-link-enabled"
+							class="msg">saved</span>
+					</li>
+					<li>
+						<input type="checkbox" id="mail-text-box"
+							ng-model="mailTextEnabled"
+							ng-change="mailTextEnabledChange()">
+						<label for="mail-text-box">
+							Enable contextual menu in text
+						</label>
+						<span data-key="mail-text-enabled"
+							class="msg">saved</span>
+					</li>
 				</ul>
 			</div>
 
@@ -152,6 +182,42 @@
 							<option value="1800000">30min</option>
 						</select>
 						<span data-key="plus-poll-enabled plus-poll-interval"
+							class="msg">saved</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sect" ng-show="blogEnabled">
+				<div class="sect-title">Blogger</div>
+				<ul>
+					<li>
+						<input type="checkbox" id="blog-page-box"
+							ng-model="blogPageEnabled"
+							ng-change="blogPageEnabledChange()">
+						<label for="blog-page-box">
+							Enable contextual menu in web pages
+						</label>
+						<span data-key="blog-page-enabled"
+							class="msg">saved</span>
+					</li>
+					<li>
+						<input type="checkbox" id="blog-link-box"
+							ng-model="blogLinkEnabled"
+							ng-change="blogLinkEnabledChange()">
+						<label for="blog-link-box">
+							Enable contextual menu in links
+						</label>
+						<span data-key="blog-link-enabled"
+							class="msg">saved</span>
+					</li>
+					<li>
+						<input type="checkbox" id="blog-text-box"
+							ng-model="blogTextEnabled"
+							ng-change="blogTextEnabledChange()">
+						<label for="blog-text-box">
+							Enable contextual menu in text
+						</label>
+						<span data-key="blog-text-enabled"
 							class="msg">saved</span>
 					</li>
 				</ul>

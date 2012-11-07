@@ -10,8 +10,14 @@ var pref = new Preference({
 		'bookmarks-enabled': false,
 		'gmail-poll-interval': 1000 * 60 * 5,
 		'gmail-poll-enabled': true,
+		'mail-page-enabled': true,
+		'mail-link-enabled': true,
+		'mail-text-enabled': true,
 		'reader-poll-interval': 1000 * 60 * 5,
 		'reader-poll-enabled': true,
+		'blog-page-enabled': true,
+		'blog-link-enabled': true,
+		'blog-text-enabled': true,
 		'urlshortener-enabled': false,
 		'shorten-button-enabled': true,
 		'music-enabled': false,
@@ -44,4 +50,22 @@ var badge = new Badge({
 		reader: {color: [0, 24, 208]},
 		plus: {color: [255, 8, 8]}
 	}
+});
+
+
+window.addEventListener('unload', function() {
+	chrome.contextMenus.removeAll();
+});
+
+
+// Execute content script to make context menus work right after install.
+var contentScript = 'scripts/content.js';
+chrome.windows.getAll({populate: true}, function(windows) {
+	windows.forEach(function(window_) {
+		window_.tabs.forEach(function(tab) {
+			if (!/^https?:\/\//.test(tab.url || ''))
+				return;
+			chrome.tabs.executeScript(tab.id, {file: contentScript});
+		});
+	});
 });

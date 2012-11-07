@@ -82,5 +82,34 @@ var Preference = (function() {
 		return true;
 	};
 
+	proto.watch = function watch(keys, callback) {
+		if (!Array.isArray(keys))
+			keys = [keys];
+
+		var call = function call() {
+			callback.apply(null, keys.map(function(key) {
+				return this.get(key);
+			}, this));
+		}.bind(this);
+		call();
+
+		this.onChange.addListener(onChange);
+		function onChange(data) {
+			if (keys.indexOf(data.key) !== -1)
+				call();
+		}
+
+		return {
+			dispose: function dispose() {
+				if (onChange === null)
+					return;
+				this.onChange.removeListener(onChange);
+				keys = null;
+				callback = null;
+				onChange = null;
+			}.bind(this)
+		};
+	};
+
 	return ctor;
 }());
