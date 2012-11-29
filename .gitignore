@@ -1,4 +1,2 @@
 .*
-Icon*
-*.zip
-resource/*
+!.gitignore
