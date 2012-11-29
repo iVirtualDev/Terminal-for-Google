@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
 
 function GoogleReader(){
 	Service.call(this, {
@@ -203,4 +209,3 @@ Object.defineProperties(GoogleReader.prototype, {
 		}
 	}
 });
-

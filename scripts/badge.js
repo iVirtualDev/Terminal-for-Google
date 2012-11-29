@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2012 Chick307 <chick307@gmail.com>
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
  *
- * Licensed under the MIT Licence.
- * http://opensource.org/licenses/MIT
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
  */
 
 var Badge = (function() {

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
+
 var pref = new Preference({
 	prefix: 'pref-',
 	defaultValues: {

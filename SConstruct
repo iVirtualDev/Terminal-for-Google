@@ -1,3 +1,9 @@
+#
+#  Copyright (c) 2012 chick307 <chick307@gmail.com>
+#
+#  Licensed under the MIT License.
+#  http://opensource.org/licenses/mit-license
+#
 
 import subprocess
 

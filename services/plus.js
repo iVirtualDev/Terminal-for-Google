@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
 
 function GooglePlus(){
 	Service.call(this, {
@@ -196,4 +202,3 @@ Object.defineProperties(GooglePlus.prototype, {
 		}
 	}
 });
-

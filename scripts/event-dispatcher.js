@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
 
 function EventDispatcher(owner, port){
 	var listeners = this._listeners = [];
@@ -26,4 +32,3 @@ EventDispatcher.prototype.hasListener = function(listener){
 	var index = this._listeners.indexOf(listener);
 	return index !== -1;
 };
-
