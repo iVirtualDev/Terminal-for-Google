@@ -14,6 +14,8 @@
 		"tabs"
 	],
 
+	"omnibox": {"keyword": "tg"},
+
 	"content_scripts": [
 		{
 			"matches": ["*://*/*"],
@@ -33,6 +35,7 @@
 			"scripts/event-dispatcher.js",
 			"scripts/preference.js",
 			"scripts/badge.js",
+			"scripts/omnibox.js",
 			"scripts/background.js"
 		]
 	},
