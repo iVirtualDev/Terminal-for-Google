@@ -24,10 +24,10 @@
 
 	"background": {
 		"scripts": [
-			"services/service.js",
-			"services/gmail.js",
-			"services/reader.js",
-			"services/plus.js",
+			"scripts/service.js",
+			"scripts/services/gmail.js",
+			"scripts/services/reader.js",
+			"scripts/services/plus.js",
 			"scripts/services/appengine.js",
 			"scripts/services/urlshortener.js",
 			"scripts/event-dispatcher.js",
