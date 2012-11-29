@@ -11,6 +11,7 @@ body {
 }
 
 body > div {
+	margin-top: 3px;
 	margin-right: 0.5em;
 	line-height: 1;
 	text-align: right;
@@ -19,9 +20,9 @@ body > div {
 body > div > a {
 	display: inline-block;
 	position: relative;
-	margin: 0 0 0 0.5em;
+	margin: 0 0 1px 0.5em;
 	color: #444;
-	font-size: 10px;
+	font: 10px/16px sans-serif;
 	text-decoration: none;
 	outline: none;
 }
@@ -31,5 +32,6 @@ body > div > a:hover {
 }
 
 body > div > a:active {
+	margin-bottom: 0;
 	top: 1px;
 }
