@@ -87,10 +87,27 @@ var Service = (function() {
 		}, this);
 	};
 
+	proto.suggest = function suggest(input) {
+		if (input === this.id)
+			return 0;
+		var text = [
+			this.id,
+			this.name,
+			this.getFullUrl()
+		].join('\n\n').toLowerCase();
+		var index = text.indexOf(input);
+		if (index === -1)
+			return -1;
+		return 1 + index;
+	};
+
+	proto.getFullUrl = function getFullUrl() {
+		return this.urlContainsScheme? this.url:
+			(pref.get('secure')? 'https://': 'http://') + this.url;
+	};
+
 	proto.open = function open() {
-		var secure = pref.get('secure');
-		var url = this.urlContainsScheme? this.url:
-			(secure? 'https://': 'http://') + this.url;
+		var url = this.getFullUrl();
 
 		chrome.tabs.getAllInWindow(null, function(tabs){
 			// If the service page has opened, select its tab.
