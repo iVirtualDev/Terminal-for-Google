@@ -267,11 +267,6 @@ var serviceInfo = [{
 	url: 'music.google.com/music/',
 	icon: 'images/goog-music-o.png'
 }, {
-	id: 'knol',
-	name: 'Knol',
-	url: 'http://knol.google.com/k',
-	icon: 'images/goog-knol.png'
-}, {
 	id: 'finance',
 	name: 'Google finance',
 	url: 'www.google.com/finance',

@@ -28,7 +28,6 @@ var pref = new Preference({
 		'urlshortener-enabled': false,
 		'shorten-button-enabled': true,
 		'music-enabled': false,
-		'knol-enabled': false,
 		'finance-enabled': false,
 		'moderator-enabled': false,
 		'books-enabled': false,
