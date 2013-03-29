@@ -245,11 +245,6 @@ var serviceInfo = [{
 	url: 'http://www.google.com/ig',
 	icon: 'images/goog-igoogle-old.png'
 }, {
-	id: 'notebook',
-	name: 'Google Notebook',
-	url: 'www.google.com/notebook/',
-	icon: 'images/goog-notebook.png'
-}, {
 	id: 'translate',
 	name: 'Google Translate',
 	url: 'http://translate.google.com/',
