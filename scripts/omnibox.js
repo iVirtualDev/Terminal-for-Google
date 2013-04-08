@@ -15,11 +15,13 @@ void function() {
 	chrome.omnibox.onInputEntered.addListener(function(input) {
 		var services = getSuggestions(input);
 		chrome.tabs.getSelected(null, function(tab) {
-			chrome.tabs.update(tab.id, {
-				url: 0 < services.length ? services[0].getFullUrl() :
-					'http://www.google.com/search?q=' +
-					encodeURIComponent(input)
-			});
+			var url = 0 < services.length ? services[0].getFullUrl() :
+				'http://www.google.com/search?q=' + encodeURIComponent(input);
+			if (tab.url === 'chrome://newtab/') {
+				chrome.tabs.update(tab.id, {selected: true, url: url});
+			} else {
+				chrome.tabs.create({selected: true, url: url});
+			}
 		});
 	});
 
@@ -32,7 +34,6 @@ void function() {
 			};
 		});
 
-		console.log('changed', suggestions);
 		suggest(suggestions);
 	});
 
