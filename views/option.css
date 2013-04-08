@@ -22,7 +22,7 @@ body {
 	width: 192px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	font: small serif;
+	font: medium serif;
 	background: #FFF;
 	box-shadow: 0 0 8px 8px #FFF;
 	z-index: 10;
@@ -94,7 +94,7 @@ body {
 }
 
 .sect {
-	font-size: small;
+	font-size: medium;
 	font-family: serif;
 	padding: 0 1.5em;
 	line-height: 2em;
@@ -102,6 +102,8 @@ body {
 
 .sect > .sect-title {
 	margin: 0 0 1.5em -1.5em;
+	padding-left: 4px;
+	border-bottom: 1px solid #888;
 	font-weight: bold;
 }
 
@@ -154,7 +156,7 @@ ul.icon-list > li.icon:-webkit-drag > div {
 	opacity: 0.7;
 }
 
-.services-text { text-align: center; color: #666 }
+.services-text { font-size: x-small; text-align: center; color: #666 }
 .services-text.columns-3 { width: 420px }
 .services-text.columns-4 { width: 560px }
 .services-text.columns-5 { width: 700px }
