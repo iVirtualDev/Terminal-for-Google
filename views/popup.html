@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <!--
-	Copyright (c) 2012 chick307 <chick307@gmail.com>
+	(C) 2012-2013 chick307 <chick307@gmail.com>
 
 	Licensed under the MIT License.
 	http://opensource.org/licenses/mit-license
 -->
-<html ng-app ng-csp>
+<html ng-app="terminalForGoogle" ng-csp>
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="popup.css">
 	<link rel="stylesheet" href="icon-list.css">
 	<script src="/components/AngularJS/angular.js"></script>
+	<script src="app.js"></script>
 	<script src="controller.js"></script>
 </head>
 <body ng-controller="Controller">
@@ -29,7 +30,7 @@
 
 	<div>
 		<a href="#" ng-click="openAppsDashboard()">Apps Dashboard</a>
-		<a href="#" ng-click="openOptionPage()">Option Page</a>
+		<a href="#" ng-click="openOptionPage()">{{ MSG_OPTIONS_PAGE }}</a>
 	</div>
 </body>
 </html>

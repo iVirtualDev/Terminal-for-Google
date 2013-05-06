@@ -1,11 +1,42 @@
 /*
- * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ * (C) 2012-2013 chick307 <chick307@gmail.com>
  *
  * Licensed under the MIT License.
  * http://opensource.org/licenses/mit-license
  */
 
-function Controller($scope) {
+function Controller($scope, i18n) {
+	$scope.MSG_OPTIONS_PAGE = i18n('options_page');
+	$scope.MSG_OPTIONS = i18n('options');
+	$scope.MSG_SERVICES = i18n('services');
+	$scope.MSG_ABOUT = i18n('about');
+	$scope.MSG_SECURITY = i18n('security');
+	$scope.MSG_USE_SSL = i18n('use_ssl');
+	$scope.MSG_APPEARANCE = i18n('appearance');
+	$scope.MSG_SHOW_ICON_ONLY = i18n('show_icon_only');
+	$scope.MSG_COLUMNS = i18n('columns');
+	$scope.MSG_DRAG_AND_DROP = i18n('drag_and_drop');
+	$scope.MSG_CHECK_UNREAD_COUNT = i18n('check_unread_count');
+	$scope.MSG_ENABLE_CONTEXTUAL_MENU_IN_WEB_PAGES =
+		i18n('enable_contextual_menu_in_web_pages');
+	$scope.MSG_ENABLE_CONTEXTUAL_MENU_IN_LINKS =
+		i18n('enable_contextual_menu_in_links');
+	$scope.MSG_ENABLE_CONTEXTUAL_MENU_IN_TEXT =
+		i18n('enable_contextual_menu_in_text');
+	$scope.MSG_ENABLE_SHORTEN_BUTTON = i18n('enable_shorten_button');
+	$scope.MSG_BEFORE_TIMING = i18n('before_timing');
+	$scope.MSG_AFTER_TIMING = i18n('after_timing');
+	$scope.MSG_SAVED = i18n('saved');
+
+	$scope.minutesMsg = function(value) {
+		return i18n('minutes', [value + '']);
+	};
+
+	$scope.allTheImagesAreProvidedByMsg = function(person, webPage) {
+		return i18n('all_the_images_are_provided_by',
+			['<a href="' + webPage + '">' + person + '</a>']);
+	};
+
 	var backgroundPage = chrome.extension.getBackgroundPage();
 	var pref = backgroundPage.pref;
 	var badge = backgroundPage.badge;

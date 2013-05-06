@@ -13,17 +13,17 @@ function Gmail(){
 		icon: 'images/goog-mail.png',
 		menus: [
 			{
-				title: 'Mail this page',
+				title: chrome.i18n.getMessage('mail_this_page'),
 				context: 'page',
 				id: 'mail-page'
 			},
 			{
-				title: 'Mail this link',
+				title: chrome.i18n.getMessage('mail_this_link'),
 				context: 'link',
 				id: 'mail-link'
 			},
 			{
-				title: 'Mail this text',
+				title: chrome.i18n.getMessage('mail_this_text'),
 				context: 'selection',
 				id: 'mail-text'
 			}

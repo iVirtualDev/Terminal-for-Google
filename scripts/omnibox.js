@@ -30,7 +30,8 @@ void function() {
 		var suggestions = services.map(function(service) {
 			return {
 				content: service.name,
-				description: 'Terminal for Google : Access to ' + service.name
+				description: 'Terminal for Google : ' +
+					chrome.i18n.getMessage('access_to', [service.name])
 			};
 		});
 

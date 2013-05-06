@@ -1,0 +1,101 @@
+{
+	"access_to": {
+		"message": "$service$にアクセスする",
+		"placeholders": {
+			"service": {
+				"content": "$1"
+			}
+		}
+	},
+	"mail_this_page": {
+		"message": "このページをメールする"
+	},
+	"mail_this_link": {
+		"message": "このリンクをメールする"
+	},
+	"mail_this_text": {
+		"message": "この文章をメールする"
+	},
+	"blog_this_page": {
+		"message": "このページをブログに書く"
+	},
+	"blog_this_link": {
+		"message": "このリンクをブログに書く"
+	},
+	"blog_this_text": {
+		"message": "この文章をブログに書く"
+	},
+	"status": {
+		"message": "状態を見る"
+	},
+	"shorten": {
+		"message": "短縮する"
+	},
+	"options_page": {
+		"message": "オプションページ"
+	},
+	"options": {
+		"message": "オプション"
+	},
+	"services": {
+		"message": "サービス"
+	},
+	"security": {
+		"message": "セキュリティ"
+	},
+	"use_ssl": {
+		"message": "SSL（https://〜）を使う"
+	},
+	"appearance": {
+		"message": "見た目"
+	},
+	"show_icon_only": {
+		"message": "アイコンだけ表示する"
+	},
+	"columns": {
+		"message": "列"
+	},
+	"drag_and_drop": {
+		"message": "ドラッグ＆ドロップしてください"
+	},
+	"check_unread_count": {
+		"message": "未読数をチェックする"
+	},
+	"enable_contextual_menu_in_web_pages": {
+		"message": "Webページ中でコンテキストメニューを有効にする"
+	},
+	"enable_contextual_menu_in_links": {
+		"message": "リンク中でコンテキストメニューを有効にする"
+	},
+	"enable_contextual_menu_in_text": {
+		"message": "文章中でコンテキストメニューを有効にする"
+	},
+	"enable_shorten_button": {
+		"message": "「短縮」ボタンを有効にする"
+	},
+	"before_timing": {
+		"message": "（"
+	},
+	"after_timing": {
+		"message": "ごとに）"
+	},
+	"saved": {
+		"message": "保存しました"
+	},
+	"all_the_images_are_provided_by": {
+		"message": "すべての画像は$person$によって提供されたものです。",
+		"placeholders": {
+			"person": {
+				"content": "$1"
+			}
+		}
+	},
+	"minutes": {
+		"message": "$value$分",
+		"placeholders": {
+			"value": {
+				"content": "$1"
+			}
+		}
+	}
+}

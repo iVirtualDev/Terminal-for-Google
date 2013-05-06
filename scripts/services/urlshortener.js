@@ -17,7 +17,8 @@ var UrlShortener = (function() {
 			'shorten-button-enabled',
 			'icon-only'
 		], function(enabled, iconOnly) {
-			this.badgeText = !enabled ? '' : iconOnly ? '+' : 'shorten';
+			this.badgeText = !enabled ? '' : iconOnly ? '+' :
+				chrome.i18n.getMessage('shorten');
 		}.bind(this));
 	};
 
