@@ -41,6 +41,7 @@ var Service = (function() {
 							type: menu.type || 'normal',
 							title: menu.title,
 							contexts: [menu.context],
+							documentUrlPatterns: ['*://*/*'],
 							onclick: function(info, tab) {
 								chrome.tabs.sendRequest(tab.id, {
 									id: menu.id,
