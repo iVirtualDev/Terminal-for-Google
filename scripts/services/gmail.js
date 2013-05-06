@@ -105,9 +105,17 @@ Gmail.prototype = Object.create(Service.prototype);
 Object.defineProperties(Gmail.prototype, {
 	badgeText: {
 		get: function() {
-			return this.unreadCount === 0 ?  '' :
-				pref.get('icon-only') && 99 < this.unreadCount ? '!' :
-				this.unreadCount.toString();
+			if (this.unreadCount === 0) {
+				return '';
+			} else if (this.unreadCount === -1) {
+				if (pref.get('icon-only'))
+					return 'ERR';
+				return 'ERROR';
+			} else if (pref.get('icon-only') && 99 < this.unreadCount) {
+				return '!'
+			} else {
+				return this.unreadCount.toString();
+			}
 		}
 	},
 	badgeCommand: {
@@ -129,7 +137,8 @@ Object.defineProperties(Gmail.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			badge.set('gmail', this._unreadCount = Number(value));
+			this._unreadCount = value = +value;
+			badge.set('gmail', value);
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */
@@ -170,10 +179,12 @@ Object.defineProperties(Gmail.prototype, {
 					if(node){
 						this.unreadCount = node.textContent;
 					}else{
+						this.unreadCount = -1;
 						console.error(
 							'Gmail#checkUnreadCount() - XML Error', xml);
 					}
 				}catch(error){
+					this.unreadCount = -1;
 					console.error(
 						'Gmail#checkUnreadCount() - ' + error);
 				}
@@ -181,7 +192,7 @@ Object.defineProperties(Gmail.prototype, {
 
 			// エラーがあったとき
 			xhr.onerror = function(error){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				clearTimeout(timeout);
 				timeout = null;
 				console.error('Gmail#checkUnreadCount() - ' + error);
@@ -189,7 +200,7 @@ Object.defineProperties(Gmail.prototype, {
 
 			// 60秒でタイムアウト
 			var timeout = setTimeout(function(){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				timeout = null;
 				xhr.abort();
 				console.warn('Gmail#checkUnreadCount() - Timeout');

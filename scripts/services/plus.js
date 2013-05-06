@@ -88,9 +88,17 @@ GooglePlus.prototype = Object.create(Service.prototype);
 Object.defineProperties(GooglePlus.prototype, {
 	badgeText: {
 		get: function() {
-			return this.unreadCount === 0 ?  '' :
-				pref.get('icon-only') && 99 < this.unreadCount ? '!' :
-				this.unreadCount.toString();
+			if (this.unreadCount === 0) {
+				return '';
+			} else if (this.unreadCount === -1) {
+				if (pref.get('icon-only'))
+					return 'ERR';
+				return 'ERROR';
+			} else if (pref.get('icon-only') && 99 < this.unreadCount) {
+				return '!';
+			} else {
+				return this.unreadCount.toString();
+			}
 		}
 	},
 	badgeCommand: {
@@ -113,7 +121,8 @@ Object.defineProperties(GooglePlus.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			badge.set('plus', this._unreadCount = Number(value));
+			this._unreadCount = value = +value;
+			badge.set('plus', value);
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */
@@ -144,13 +153,14 @@ Object.defineProperties(GooglePlus.prototype, {
 					var text = xhr.responseText;
 					this.unreadCount = text.match(/"on\.uc",(\d+),/)[1];
 				}catch(error){
+					this.unreadCount = -1;
 					console.error('GooglePlus#checkUnreadCount() - ' + error);
 				}
 			}.bind(this);
 
 			// エラーがあったとき
 			xhr.onerror = function(error){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				clearTimeout(timeout);
 				timeout = null;
 				console.error('GooglePlus#checkUnreadCount() - ' + error);
@@ -158,7 +168,7 @@ Object.defineProperties(GooglePlus.prototype, {
 
 			// 60秒でタイムアウト
 			var timeout = setTimeout(function(){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				timeout = null;
 				xhr.abort();
 				console.warn('GooglePlus#checkUnreadCount() - Timeout');
