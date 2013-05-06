@@ -16,6 +16,7 @@ module.exports = (grunt) ->
 				dest: 'dist.zip'
 				src: [
 					'manifest.json'
+					'_locales/**/*.json'
 					'views/**/*.*'
 					'lib/**/*.js'
 					'scripts/**/*.js'
