@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <!--
-	Copyright (c) 2012 chick307 <chick307@gmail.com>
+	(C) 2012-2013 chick307 <chick307@gmail.com>
 
 	Licensed under the MIT License.
 	http://opensource.org/licenses/mit-license
 -->
-<html ng-app ng-csp>
+<html ng-app="terminalForGoogle" ng-csp>
 <head>
 	<meta charset="utf-8">
 	<title>Terminal for Google</title>
 	<link rel="stylesheet" href="option.css">
 	<link rel="stylesheet" href="icon-list.css">
 	<script src="/lib/angular.js"></script>
+	<script src="app.js"></script>
 	<script src="controller.js"></script>
 	<script src="option.js"></script>
 </head>
 <body ng-controller="Controller">
 	<div id="nav">
 		<div id="title">
-			<img src="/images/goog-logo-old.png"><span>Options</span>
+			<img src="/images/goog-logo-old.png"><span>{{ MSG_OPTIONS }}</span>
 		</div>
 		<ul id="nav-list">
 			<li data-nav="#icon-lists" class="selected">
-				<a href="#icon-lists">Services</a>
+				<a href="#icon-lists">{{ MSG_SERVICES }}</a>
 			</li>
 			<li data-nav="#about">
-				<a href="#about">About</a>
+				<a href="#about">{{ MSG_ABOUT }}</a>
 			</li>
 		</ul>
 	</div>
 	<div id="contents">
 		<div id="icon-lists">
 			<div class="sect">
-				<div class="sect-title">Security</div>
+				<div class="sect-title">{{ MSG_SECURITY }}</div>
 				<ul>
 					<li>
 						<input id="secure-box" type="checkbox"
 							ng-model="secure" ng-change="change('secure')">
-						<label for="secure-box">use SSL (https://〜)</label>
-						<span data-key="secure" class="msg">saved</span>
+						<label for="secure-box">{{ MSG_USE_SSL }}</label>
+						<span data-key="secure"
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
 
 			<div class="sect">
-				<div class="sect-title">Apperance</div>
+				<div class="sect-title">{{ MSG_APPEARANCE }}</div>
 				<ul>
 					<li>
 						<input id="icon-only-box" type="checkbox"
 						ng-model="iconOnly"
 						ng-change="change('icon-only')">
-						<label for="icon-only-box">show icon only</label>
-						<span data-key="icon-only" class="msg">saved</span>
+						<label for="icon-only-box">
+							{{ MSG_SHOW_ICON_ONLY }}
+						</label>
+						<span data-key="icon-only"
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 					<li>
-						<label for="columns-box">columns</label>
+						<label for="columns-box">{{ MSG_COLUMNS }}</label>
 						<select id="columns-box" ng-model="columns"
 							ng-change="change('columns')">
 							<option value="3">3</option>
 							<option value="4">4</option>
 							<option value="5">5</option>
 						</select>
-						<span data-key="columns" class="msg">saved</span>
+						<span data-key="columns"
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
 
 			<div class="sect">
-				<div class="sect-title">Services</div>
+				<div class="sect-title">{{ MSG_SERVICES }}</div>
 				<ul id="enabled-services"
 					class="icon-list columns-{{columns}}">
 					<li ng-repeat="icon in icons" data-id="{{icon.id}}"
@@ -79,7 +85,7 @@
 					</li>
 				</ul>
 				<div class="services-text columns-{{columns}}">
-					↓ drag and drop ↑<br>
+					↓ {{ MSG_DRAG_AND_DROP }} ↑<br>
 				</div>
 				<ul id="disabled-services"
 					class="icon-list columns-{{columns}}">
@@ -100,48 +106,57 @@
 						<input type="checkbox" id="gmail-poll-box"
 							ng-model="gmailPollEnabled"
 							ng-change="change('gmail-poll-enabled')">
-						<label for="gmail-poll-box">check unread count</label>
-						<label for="gmail-poll-interval-box">every</label>
+						<label for="gmail-poll-box">
+							{{ MSG_CHECK_UNREAD_COUNT }}
+						</label>
+						<label for="gmail-poll-interval-box">
+							{{ MSG_BEFORE_TIMING }}
+						</label>
 						<select id="gmail-poll-interval-box"
 							ng-model="gmailPollInterval"
 							ng-disabled="!gmailPollEnabled"
 							ng-change="change('gmail-poll-interval')">
-							<option value="300000">5min</option>
-							<option value="600000">10min</option>
-							<option value="1800000">30min</option>
+							<option value="300000">{{ minutesMsg(5) }}</option>
+							<option
+								value="600000">{{ minutesMsg(10) }}</option>
+							<option
+								value="1800000">{{ minutesMsg(30) }}</option>
 						</select>
+						<label for="gmail-poll-interval-box">
+							{{ MSG_AFTER_TIMING }}
+						</label>
 						<span data-key="gmail-poll-enabled gmail-poll-interval"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 					<li>
 						<input type="checkbox" id="mail-page-box"
 							ng-model="mailPageEnabled"
 							ng-change="mailPageEnabledChange()">
 						<label for="mail-page-box">
-							Enable contextual menu in web pages
+							{{ MSG_ENABLE_CONTEXTUAL_MENU_IN_WEB_PAGES }}
 						</label>
 						<span data-key="mail-page-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 					<li>
 						<input type="checkbox" id="mail-link-box"
 							ng-model="mailLinkEnabled"
 							ng-change="mailLinkEnabledChange()">
 						<label for="mail-link-box">
-							Enable contextual menu in links
+							{{ MSG_ENABLE_CONTEXTUAL_MENU_IN_LINKS }}
 						</label>
 						<span data-key="mail-link-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 					<li>
 						<input type="checkbox" id="mail-text-box"
 							ng-model="mailTextEnabled"
 							ng-change="mailTextEnabledChange()">
 						<label for="mail-text-box">
-							Enable contextual menu in text
+							{{ MSG_ENABLE_CONTEXTUAL_MENU_IN_TEXT }}
 						</label>
 						<span data-key="mail-text-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
@@ -153,19 +168,28 @@
 						<input type="checkbox" id="reader-poll-box"
 							ng-model="readerPollEnabled"
 							ng-change="change('reader-poll-enabled')">
-						<label for="reader-poll-box">check unread count</label>
-						<label for="reader-poll-interval-box">every</label>
+						<label for="reader-poll-box">
+							{{ MSG_CHECK_UNREAD_COUNT }}
+						</label>
+						<label for="reader-poll-interval-box">
+							{{ MSG_BEFORE_TIMING }}
+						</label>
 						<select id="reader-poll-interval-box"
 							ng-model="readerPollInterval"
 							ng-disabled="!readerPollEnabled"
 							ng-change="change('reader-poll-interval')">
-							<option value="300000">5min</option>
-							<option value="600000">10min</option>
-							<option value="1800000">30min</option>
+							<option value="300000">{{ minutesMsg(5) }}</option>
+							<option
+								value="600000">{{ minutesMsg(10) }}</option>
+							<option
+								value="1800000">{{ minutesMsg(30) }}</option>
 						</select>
+						<label for="reader-poll-interval-box">
+							{{ MSG_AFTER_TIMING }}
+						</label>
 						<span
 							data-key="reader-poll-enabled reader-poll-interval"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
@@ -177,18 +201,27 @@
 						<input type="checkbox" id="plus-poll-box"
 							ng-model="plusPollEnabled"
 							ng-change="change('plus-poll-enabled')">
-						<label for="plus-poll-box">check unread count</label>
-						<label for="plus-poll-interval-box">every</label>
+						<label for="plus-poll-box">
+							{{ MSG_CHECK_UNREAD_COUNT }}
+						</label>
+						<label for="plus-poll-interval-box">
+							{{ MSG_BEFORE_TIMING }}
+						</label>
 						<select id="plus-poll-interval-box"
 							ng-model="plusPollInterval"
 							ng-disabled="!plusPollEnabled"
 							ng-change="change('plus-poll-interval')">
-							<option value="300000">5min</option>
-							<option value="600000">10min</option>
-							<option value="1800000">30min</option>
+							<option value="300000">{{ minutesMsg(5) }}</option>
+							<option
+								value="600000">{{ minutesMsg(10) }}</option>
+							<option
+								value="1800000">{{ minutesMsg(30) }}</option>
 						</select>
+						<label for="plus-poll-interval-box">
+							{{ MSG_AFTER_TIMING }}
+						</label>
 						<span data-key="plus-poll-enabled plus-poll-interval"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
@@ -201,30 +234,30 @@
 							ng-model="blogPageEnabled"
 							ng-change="blogPageEnabledChange()">
 						<label for="blog-page-box">
-							Enable contextual menu in web pages
+							{{ MSG_ENABLE_CONTEXTUAL_MENU_IN_WEB_PAGES }}
 						</label>
 						<span data-key="blog-page-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 					<li>
 						<input type="checkbox" id="blog-link-box"
 							ng-model="blogLinkEnabled"
 							ng-change="blogLinkEnabledChange()">
 						<label for="blog-link-box">
-							Enable contextual menu in links
+							{{ MSG_ENABLE_CONTEXTUAL_MENU_IN_LINKS }}
 						</label>
 						<span data-key="blog-link-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 					<li>
 						<input type="checkbox" id="blog-text-box"
 							ng-model="blogTextEnabled"
 							ng-change="blogTextEnabledChange()">
 						<label for="blog-text-box">
-							Enable contextual menu in text
+							{{ MSG_ENABLE_CONTEXTUAL_MENU_IN_TEXT }}
 						</label>
 						<span data-key="blog-text-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
@@ -237,16 +270,20 @@
 							ng-model="shortenButtonEnabled"
 							ng-change="change('shorten-button-enabled')">
 						<label for="shorten-button-box">
-							enable "shorten" button
+							{{ MSG_ENABLE_SHORTEN_BUTTON }}
 						</label>
 						<span data-key="shorten-button-enabled"
-							class="msg">saved</span>
+							class="msg">{{ MSG_SAVED }}</span>
 					</li>
 				</ul>
 			</div>
 		</div>
 
 		<div id="about">
+			<a href="https://github.com/chick307/Terminal-for-Google">
+				<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
+			</a>
+
 			<div class="sect">
 				<div class="sect-title">
 					<a href="https://chrome.google.com/webstore/detail/denbapicipbiplggmfebiogiphopgjca">Terminal for Google</a>
@@ -258,9 +295,6 @@
 					Licensed under the <a href="http://opensource.org/licenses/mit-license">MIT License</a>.
 				</p>
 				<p>
-					<a href="https://github.com/chick307/Terminal-for-Google">Fork me on GitHub</a>.
-				</p>
-				<p>
 					<a href='http://www.pledgie.com/campaigns/19765'>
 						<img alt='Click here to lend your support to: Terminal for Google (Google Chrome Extension) and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/19765.png?skin_name=chrome'>
 					</a>
@@ -270,10 +304,7 @@
 				<div class="sect-title">
 					<a href="http://fav.me/d4h6dg9">Google JFK Icons</a>
 				</div>
-				<p>
-					The all of the images are provided by
-					<a href="http://carlosjj.deviantart.com/">Carlos</a>.
-				</p>
+				<p ng-bind-html-unsafe="allTheImagesAreProvidedByMsg('Carlos', 'http://carlosjj.deviantart.com/')"></p>
 			</div>
 			<div class="sect">
 				<div class="sect-title">

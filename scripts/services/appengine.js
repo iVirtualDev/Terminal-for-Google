@@ -15,7 +15,7 @@ var AppEngine = (function() {
 		});
 
 		pref.watch('icon-only', function(iconOnly) {
-			this.badgeText = iconOnly ? '?' : 'status';
+			this.badgeText = iconOnly ? '?' : chrome.i18n.getMessage('status');
 		}.bind(this));
 	};
 

@@ -178,17 +178,18 @@ var serviceInfo = [{
 	icon: 'images/goog-blogger.png',
 	menus: [
 		{
-			title: 'Blog this page',
+			title: chrome.i18n.getMessage('blog_this_page'),
 			context: 'page',
 			id: 'blog-page'
 		},
 		{
+			title: chrome.i18n.getMessage('blog_this_link'),
 			title: 'Blog this link',
 			context: 'link',
 			id: 'blog-link'
 		},
 		{
-			title: 'Blog this text',
+			title: chrome.i18n.getMessage('blog_this_text'),
 			context: 'selection',
 			id: 'blog-text'
 		}
