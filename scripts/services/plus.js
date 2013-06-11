@@ -9,7 +9,7 @@ function GooglePlus(){
 	Service.call(this, {
 		id: 'plus',
 		name: 'Google+',
-		url: 'https//plus.google.com/',
+		url: 'https://plus.google.com/',
 		icon: 'images/g-plus-icon-150x150.png'
 	});
 
