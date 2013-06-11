@@ -88,9 +88,17 @@ GoogleReader.prototype = Object.create(Service.prototype);
 Object.defineProperties(GoogleReader.prototype, {
 	badgeText: {
 		get: function() {
-			return this.unreadCount === 0 ?  '' :
-				pref.get('icon-only') && 99 < this.unreadCount ? '!' :
-				this.unreadCount.toString();
+			if (this.unreadCount === 0) {
+				return '';
+			} else if (this.unreadCount === -1) {
+				if (pref.get('icon-only'))
+					return 'E';
+				return 'ERROR';
+			} else if (pref.get('icon-only') && 99 < this.unreadCount) {
+				return '!';
+			} else {
+				return this.unreadCount.toString();
+			}
 		}
 	},
 	badgeCommand: {
@@ -112,7 +120,8 @@ Object.defineProperties(GoogleReader.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			badge.set('reader', this._unreadCount = Number(value));
+			this._unreadCount = value = +value;
+			badge.set('reader', value);
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */
@@ -143,13 +152,14 @@ Object.defineProperties(GoogleReader.prototype, {
 					var json = JSON.parse(xhr.responseText);
 					if(!json.unreadcounts.some(function(link){
 						if(link.id.indexOf('reading-list') >= 0){
-							this.unreadCount = String(link.count);
+							this.unreadCount = link.count;
 							return true;
 						}
 					}, this)){
 						this.unreadCount = 0;
 					}
 				}catch(error){
+					this.unreadCount = -1;
 					console.error(
 						'GoogleReader#checkUnreadCount() - ' + error);
 				}
@@ -157,7 +167,7 @@ Object.defineProperties(GoogleReader.prototype, {
 
 			// エラーがあったとき
 			xhr.onerror = function(error){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				clearTimeout(timeout);
 				timeout = null;
 				console.error('GoogleReader#checkUnreadCount() - ' + error);
@@ -165,7 +175,7 @@ Object.defineProperties(GoogleReader.prototype, {
 
 			// 60秒でタイムアウト
 			var timeout = setTimeout(function(){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				timeout = null;
 				xhr.abort();
 				console.warn('GoogleReader#checkUnreadCount() - Timeout');

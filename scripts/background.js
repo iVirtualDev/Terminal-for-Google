@@ -50,13 +50,11 @@ var pref = new Preference({
 	}
 });
 
-var badge = new Badge({
-	keys: {
-		gmail: {color: [208, 0, 24]},
-		reader: {color: [0, 24, 208]},
-		plus: {color: [255, 8, 8]}
-	}
-});
+
+var badge = new Badge(['gmail', 'reader', 'plus']);
+badge.setColor('gmail', [255, 16, 16]);
+badge.setColor('reader', [16, 16, 255]);
+badge.setColor('plus', [255, 16, 16]);
 
 
 window.addEventListener('unload', function() {

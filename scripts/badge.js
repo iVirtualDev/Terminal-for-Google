@@ -1,86 +1,89 @@
 /*
- * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ * (C) 2012-2013 chick307 <chick307@gmail.com>
  *
  * Licensed under the MIT License.
  * http://opensource.org/licenses/mit-license
  */
 
 var Badge = (function() {
-	var min = Math.min;
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-	var ctor = function Badge(args) {
+	var ctor = function Badge(keys) {
 		if (!(this instanceof ctor))
-			throw new TypeError('Constructor cannot called as a function.');
+			throw new TypeError('Constructor cannot be called as a function.');
 
-		var channel = new MessageChannel();
-		this._onChangePort = channel.port1;
-		this.onChange = new EventDispatcher(this, channel.port2);
+		this._values = Object.create(null);
+		this._colors = Object.create(null);
 
-		this._values = {};
-		if (args != null) {
-			Object.keys(args.keys || {}).forEach(function(key) {
-				this._values[key] = {color: args.keys[key].color, value: null};
-			}, this);
-		}
-
-		if (args != null && args.onChange)
-			this.onChange.addListener(args.onChange);
+		Array.prototype.slice.call(keys).forEach(function(key) {
+			this._values[key] = 0;
+			this._colors[key] = [0, 0, 0];
+		}, this);
 	};
 
-	var proto = ctor.prototype = {};
-	proto.constructor = ctor;
+	var proto = ctor.prototype;
 
-	proto.get = function get(key, defaultValue) {
-		if (hasOwnProperty.call(this._values, key))
-			return this._values[key].value;
-		return defaultValue;
+	proto.get = function get(key) {
+		key += '';
+
+		return (key in this._values) ? this._values[key] : null;
 	};
 
 	proto.set = function set(key, value) {
-		if (value === 0 || value === '' || value === void 0)
-			value = null;
-		this._values[key].value = value;
-		this._refresh();
-		this._onChangePort.postMessage({key: key, value: value});
+		key += '';
+		value |= 0;
+
+		if (key in this._values && this._values[key] !== value) {
+			this._values[key] = value;
+			this._refresh();
+		}
+	};
+
+	proto.getColor = function getColor(key) {
+		key += '';
+
+		return (key in this._colors) ? this._colors[key] : null;
+	};
+
+	proto.setColor = function setColor(key, value) {
+		key += '';
+		if (value == null || typeof value !== 'object')
+			return;
+
+		var color = this._colors[key];
+		var r = value[0] & 0xFF, g = value[1] & 0xFF, b = value[2] & 0xFF;
+		if (color && (color[0] !== r || color[1] !== g || color[2] !== b)) {
+			this._colors[key] = [r, g, b];
+			this._refresh();
+		}
 	};
 
 	proto._refresh = function _refresh() {
-		var values = Object.keys(this._values).filter(function(key) {
-			var value = this._values[key].value;
-			return value !== null;
-		}, this).map(function(key) {
-			return {
-				color: this._values[key].color || [96, 96, 96],
-				value: this._values[key].value
-			};
-		}, this);
-
-		if (values.length === 0) {
-			chrome.browserAction.setBadgeText({text: ''});
-		} else if (values.length === 1) {
-			chrome.browserAction.setBadgeText({
-				text: '' + values[0].value
-			});
-
-			chrome.browserAction.setBadgeBackgroundColor({
-				color: values[0].color.concat([255])
-			});
-		} else {
-			chrome.browserAction.setBadgeText({
-				text: values.every(function(value) {
-					return value.value === 'ERR';
-				}) ? 'ERR' : '!'
-			});
-
-			chrome.browserAction.setBadgeBackgroundColor({
-				color: values.reduce(function(color, value) {
-					for (var i = 0; i < 3; i++)
-						color[i] = min(255, color[i] + value.color[i]);
-					return color;
-				}, [0, 0, 0, 255])
-			});
+		var values = [], colors = [];
+		for (var key in this._values) {
+			if (this._values[key] !== 0) {
+				values.push(this._values[key]);
+				colors.push(this._colors[key]);
+			}
 		}
+
+		var text, color = [0, 0, 0, 255];
+		if (values.length === 0) {
+			text = '';
+		} else if (values.length === 1) {
+			text = (values[0] === -1) ? 'ERR' : '' + values[0];
+			color = colors[0].concat([255]);
+		} else {
+			text = values.every(function(value) {
+				return value === -1;
+			}) ? 'ERR' : '!';
+			color = colors.reduce(function(color, c) {
+				for (var i = 0; i < 3; i++)
+					color[i] = Math.min(255, color[i] + c[i]);
+				return color;
+			}, [0, 0, 0, 255]);
+		}
+
+		chrome.browserAction.setBadgeText({text: text});
+		chrome.browserAction.setBadgeBackgroundColor({color: color});
 	};
 
 	return ctor;
