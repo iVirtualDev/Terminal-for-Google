@@ -109,7 +109,7 @@ Object.defineProperties(Gmail.prototype, {
 				return '';
 			} else if (this.unreadCount === -1) {
 				if (pref.get('icon-only'))
-					return 'ERR';
+					return 'E';
 				return 'ERROR';
 			} else if (pref.get('icon-only') && 99 < this.unreadCount) {
 				return '!'
