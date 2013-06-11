@@ -9,7 +9,7 @@ function GooglePlus(){
 	Service.call(this, {
 		id: 'plus',
 		name: 'Google+',
-		url: 'plus.google.com/',
+		url: 'https//plus.google.com/',
 		icon: 'images/g-plus-icon-150x150.png'
 	});
 
@@ -28,10 +28,8 @@ function GooglePlus(){
 					return;
 
 				// もしタブのURLがGoogle Plusならば未読チェック
-				if(tab.url.indexOf('http://' + this.url) === 0 ||
-					tab.url.indexOf('https://' + this.url) === 0){
+				if (tab.url.indexOf(this.url) === 0)
 					this.checkUnreadCount();
-				}
 			}.bind(this)
 		}
 	});
@@ -95,16 +93,15 @@ Object.defineProperties(GooglePlus.prototype, {
 	},
 	badgeCommand: {
 		value: function(callback) {
-			var url = (pref.get('secure')? 'https://': 'http://') +
-				'plus.google.com/notifications/all';
+			var url = 'https://plus.google.com/notifications/all';
 			chrome.tabs.create({url: url, selected: true}, callback);
 		}
 	},
 	/** 未読数を返すAPIのURL */
 	apiURL: {
 		get: function(){
-			return (pref.get('secure')? 'https://': 'http://') +
-				'plus.google.com/u/0/_/n/guc';
+			return 'https://plus.google.com/u/0/_/n/gsuc?origin=' +
+				encodeURIComponent('https://plus.google.com');
 		}
 	},
 	/** 未読数 */
@@ -142,7 +139,7 @@ Object.defineProperties(GooglePlus.prototype, {
 				try{
 					// レスポンスから未読数を取り出す
 					var text = xhr.responseText;
-					this.unreadCount = text.match(/"on\.uc",(\d+),/)[1];
+					this.unreadCount = text.match(/\[(\d+),/)[1];
 				}catch(error){
 					console.error('GooglePlus#checkUnreadCount() - ' + error);
 				}
