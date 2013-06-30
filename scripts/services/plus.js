@@ -1,27 +1,16 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
 
-function Gmail(){
+function GooglePlus(){
 	Service.call(this, {
-		id: 'gmail',
-		name: 'Gmail',
-		url: 'mail.google.com/mail',
-		icon: 'images/goog-mail.png',
-		menus: [
-			{
-				title: 'Mail this page',
-				context: 'page',
-				action: 'gmail'
-			},
-			{
-				title: 'Mail this link',
-				context: 'link',
-				action: 'gmail'
-			},
-			{
-				title: 'Mail this text',
-				context: 'selection',
-				action: 'gmail'
-			}
-		]
+		id: 'plus',
+		name: 'Google+',
+		url: 'https://plus.google.com/',
+		icon: 'images/g-plus-icon-150x150.png'
 	});
 
 	Object.defineProperties(this, {
@@ -38,18 +27,16 @@ function Gmail(){
 				if(!tab.url)
 					return;
 
-				// もしタブのURLがGmailならば未読チェック
-				if(tab.url.indexOf('http://' + this.url) === 0 ||
-					tab.url.indexOf('https://' + this.url) === 0){
+				// もしタブのURLがGoogle Plusならば未読チェック
+				if (tab.url.indexOf(this.url) === 0)
 					this.checkUnreadCount();
-				}
 			}.bind(this)
 		}
 	});
 
-	// Gmailが有効にされたとき
+	// Google Plusが有効にされたとき
 	this.onEnabled.push(function(){
-		if(pref.get('gmail-poll-enabled')){
+		if(pref.get('plus-poll-enabled')){
 			// 未読をチェック
 			this.checkUnreadCount();
 
@@ -61,7 +48,7 @@ function Gmail(){
 		}
 	});
 
-	// Gmailが無効にされたとき
+	// Google Plusが無効にされたとき
 	this.onDisabled.push(function(){
 		this.unreadCount = 0;
 
@@ -77,10 +64,10 @@ function Gmail(){
 		if(!this.isEnabled)
 			return;
 
-		if(key === 'gmail-poll-interval'){
+		if(key === 'plus-poll-interval'){
 			this.stopPolling();
 			this.startPolling();
-		}else if(key === 'gmail-poll-enabled'){
+		}else if(key === 'plus-poll-enabled'){
 			this.unreadCount = 0;
 			if(value){
 				this.checkUnreadCount();
@@ -95,13 +82,34 @@ function Gmail(){
 }
 
 
-Gmail.prototype = Object.create(Service.prototype);
-Object.defineProperties(Gmail.prototype, {
-	/** 未読のフィードのURL */
-	feedURL: {
+GooglePlus.prototype = Object.create(Service.prototype);
+Object.defineProperties(GooglePlus.prototype, {
+	badgeText: {
+		get: function() {
+			if (this.unreadCount === 0) {
+				return '';
+			} else if (this.unreadCount === -1) {
+				if (pref.get('icon-only'))
+					return 'E';
+				return 'ERROR';
+			} else if (pref.get('icon-only') && 99 < this.unreadCount) {
+				return '!';
+			} else {
+				return this.unreadCount.toString();
+			}
+		}
+	},
+	badgeCommand: {
+		value: function(callback) {
+			var url = 'https://plus.google.com/notifications/all';
+			chrome.tabs.create({url: url, selected: true}, callback);
+		}
+	},
+	/** 未読数を返すAPIのURL */
+	apiURL: {
 		get: function(){
-			return (pref.get('secure')? "https://": "http://") +
-				"mail.google.com/mail/feed/atom";
+			return 'https://plus.google.com/u/0/_/n/gsuc?origin=' +
+				encodeURIComponent('https://plus.google.com');
 		}
 	},
 	/** 未読数 */
@@ -110,15 +118,16 @@ Object.defineProperties(Gmail.prototype, {
 			return this._unreadCount;
 		},
 		set: function(value){
-			this._unreadCount = badge.gmail = Number(value);
+			this._unreadCount = value = +value;
+			badge.set('plus', value);
 		}
 	},
 	/** 未読数を調べに行く頻度(ms) */
 	pollInterval: {
 		get: function(){
-			var pollInterval = pref.get('gmail-poll-interval');
+			var pollInterval = pref.get('plus-poll-interval');
 			if(!isFinite(pollInterval))
-				pollInterval = pref.set('gmail-poll-interval', 1000 * 60 * 5);
+				pollInterval = pref.set('plus-poll-interval', 1000 * 60 * 5);
 			return pollInterval;
 		}
 	},
@@ -126,7 +135,7 @@ Object.defineProperties(Gmail.prototype, {
 	checkUnreadCount: {
 		value: function(){
 			var xhr = new XMLHttpRequest();
-			xhr.open('GET', this.feedURL, true);
+			xhr.open('GET', this.apiURL, true);
 			xhr.send(null);
 
 			// 読み込み完了
@@ -137,43 +146,29 @@ Object.defineProperties(Gmail.prototype, {
 				}
 
 				try{
-					// XPathでXMLからデータを取得
-					var xpath = '/gmail:feed/gmail:fullcount';
-					var ns = function(prefix){
-						if(prefix === 'gmail')
-							return 'http://purl.org/atom/ns#';
-					};
-
-					var xml = xhr.responseXML;
-					var node = xml.evaluate(xpath, xml, ns,
-						XPathResult.ANY_TYPE, null).iterateNext();
-
-					if(node){
-						this.unreadCount = node.textContent;
-					}else{
-						console.error(
-							'Gmail#checkUnreadCount() - XML Error', xml);
-					}
+					// レスポンスから未読数を取り出す
+					var text = xhr.responseText;
+					this.unreadCount = text.match(/\[(\d+),/)[1];
 				}catch(error){
-					console.error(
-						'Gmail#checkUnreadCount() - ' + error);
+					this.unreadCount = -1;
+					console.error('GooglePlus#checkUnreadCount() - ' + error);
 				}
 			}.bind(this);
 
 			// エラーがあったとき
 			xhr.onerror = function(error){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				clearTimeout(timeout);
 				timeout = null;
-				console.error('Gmail#checkUnreadCount() - ' + error);
+				console.error('GooglePlus#checkUnreadCount() - ' + error);
 			}.bind(this);
 
 			// 60秒でタイムアウト
 			var timeout = setTimeout(function(){
-				this.unreadCount = 0;
+				this.unreadCount = -1;
 				timeout = null;
 				xhr.abort();
-				console.warn('Gmail#checkUnreadCount() - Timeout');
+				console.warn('GooglePlus#checkUnreadCount() - Timeout');
 			}.bind(this), 1000 * 60);
 		}
 	},
@@ -214,4 +209,3 @@ Object.defineProperties(Gmail.prototype, {
 		}
 	}
 });
-

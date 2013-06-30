@@ -1,6 +1,0 @@
-[submodule "scripts/iggyjs"]
-	path = scripts/iggyjs
-	url = git@github.com:Chick307/Iggy.js.git
-[submodule "scripts/klassjs"]
-	path = scripts/klassjs
-	url = git://github.com/Chick307/KlassJS.git

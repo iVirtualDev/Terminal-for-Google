@@ -1,0 +1,107 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
+
+.icon-list {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+.icon-list.columns-3 { width: 420px }
+.icon-list.columns-4 { width: 560px }
+.icon-list.columns-5 { width: 700px }
+.icon-list.columns-3.icon-only-true { width: 120px }
+.icon-list.columns-4.icon-only-true { width: 160px }
+.icon-list.columns-5.icon-only-true { width: 200px }
+
+.icon {
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 1px;
+	border: none;
+	width: 140px;
+	height: 40px;
+	vertical-align: top;
+	cursor: pointer;
+}
+
+.icon.enabled-false { display: none; }
+.icon-only-true > .icon { width: 40px; }
+
+.icon > div {
+	display: -webkit-box;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-align: center;
+	border: 1px solid #BBB;
+	border-radius: 5px;
+	background: -webkit-linear-gradient(top, #FFF, #DDD);
+}
+
+.icon:active > div { background: -webkit-linear-gradient(top, #DDD, #EEE); }
+
+.icon > div > button {
+	position: absolute;
+	z-index: 1;
+	margin: 0;
+	padding: 0 0.5em;
+	border: 1px solid #000;
+	border-radius: 8px;
+	min-width: 16px;
+	height: 16px;
+	background-image: -webkit-linear-gradient(
+		top, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.2));
+	opacity: 0.8;
+	color: #FFF;
+	font-size: 9px;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+	line-height: 16px;
+	pointer: default; outline: none;
+}
+
+.icon-only-false > .icon > div > button {
+	left: 16px;
+	bottom: -1px;
+}
+
+.icon-only-true > .icon > div > button {
+	left: auto;
+	right: 1px;
+	bottom: 1px;
+	padding: 0;
+	width: 22px;
+}
+
+.icon > div > button:empty { display: none; }
+.icon[data-id=gmail] > div > button { background-color: red; }
+.icon[data-id=plus] > div > button { background-color: red; }
+.icon[data-id=appengine] > div > button,
+.icon[data-id=urlshortener] > div > button { background-color: #468; }
+
+.icon > div > img {
+	margin: 2px;
+	width: 32px;
+	height: 32px;
+	-webkit-user-drag: none;
+}
+
+.icon > div > span {
+	display: block;
+	-webkit-box-flex: 1;
+	margin: 0;
+	padding: 0 1em;
+	font: 12px sans-serif;
+	line-height: 16px;
+	text-align: center;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.icon-only-true > .icon > div > span { display: none; }

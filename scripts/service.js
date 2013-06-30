@@ -1,17 +1,21 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
 
-var Service = klass.define({
-	constructor: function Service(args){
+var Service = (function() {
+	var ctor = function Service(args) {
 		Object.defineProperties(this, {
 			id: {value: args.id},
 			name: {value: args.name},
 			url: {value: args.url},
 			icon: {value: args.icon || 'images/goog-logo.png'},
-			menus: {value: args.menus || []},
 			urlContainsScheme: {value: /^[a-z]+:/.test(args.url)},
 			onEnabled: {value: []},
 			onDisabled: {value: []},
-			isEnabled: {value: false, writable: true},
-			menuIds: {value: [], writable: true}
+			isEnabled: {value: false, writable: true}
 		});
 
 		// Call this.enable() asynchronously, if this service has been enabled.
@@ -23,65 +27,88 @@ var Service = klass.define({
 			}.bind(this);
 		}
 
-		// Remove the all context menus, when the background page is unloaded.
-		if(args.menus && args.menus.length > 0){
-			window.addEventListener('unload', function(){
-				this.menuIds.forEach(function(menuId){
+		var menus = args.menus || [];
+		menus.forEach(function(menu){
+			var menuId = null;
+
+			pref.watch([
+				args.id + '-enabled',
+				menu.id + '-enabled'
+			], function(serviceEnabled, menuEnabled) {
+				if (serviceEnabled && menuEnabled) {
+					if (menuId === null) {
+						menuId = chrome.contextMenus.create({
+							type: menu.type || 'normal',
+							title: menu.title,
+							contexts: [menu.context],
+							documentUrlPatterns: ['*://*/*'],
+							onclick: function(info, tab) {
+								chrome.tabs.sendRequest(tab.id, {
+									id: menu.id,
+									text: info.selectionText,
+									link: info.linkUrl
+								});
+							}
+						});
+					}
+				} else if (menuId !== null) {
 					chrome.contextMenus.remove(menuId);
-				});
-			}.bind(this), false);
-		}
-	},
-	enable: function(){
+					menuId = null;
+				}
+			});
+		});
+	};
+
+	var proto = ctor.prototype = {};
+	proto.constructor = ctor;
+
+	proto.enable = function enable() {
 		if(this.isEnabled)
 			return;
 
 		this.isEnabled = true;
 		pref.set(this.id + '-enabled', true);
 
-		// Create context menus.
-		this.menuIds = this.menus.map(function(menu){
-			return chrome.contextMenus.create({
-				type: menu.type || 'normal',
-				title: menu.title,
-				contexts: [menu.context],
-				onclick: function(info, tab){
-					chrome.tabs.sendRequest(tab.id, {
-						action: menu.action,
-						info: info,
-						tab: tab
-					});
-				}
-			});
-		});
-
 		// Emit onEnabled event.
 		this.onEnabled.forEach(function(onEnabled){
 			onEnabled.call(this);
 		}, this);
-	},
-	disable: function(){
+	};
+
+	proto.disable = function disable() {
 		if(!this.isEnabled)
 			return;
 
 		this.isEnabled = false;
 		pref.set(this.id + '-enabled', false);
 
-		// Remove context menus.
-		this.menuIds.forEach(function(menuId){
-			chrome.contextMenus.remove(menuId);
-		});
-		this.menuIds = [];
-
 		// Emit onDisabled event.
 		this.onDisabled.forEach(function(onDisabled){
 			onDisabled.call(this);
 		}, this);
-	},
-	open: function(){
-		var secure = pref.get('secure');
-		var url = this.urlContainsScheme? this.url:
-			(secure? 'https://': 'http://') + this.url;
+	};
+
+	proto.suggest = function suggest(input) {
+		if (input === this.id)
+			return 0;
+		var text = [
+			this.id,
+			this.name,
+			this.getFullUrl()
+		].join('\n\n').toLowerCase();
+		var index = text.indexOf(input);
+		if (index === -1)
+			return -1;
+		return 1 + index;
+	};
+
+	proto.getFullUrl = function getFullUrl() {
+		return this.urlContainsScheme? this.url:
+			(pref.get('secure')? 'https://': 'http://') + this.url;
+	};
+
+	proto.open = function open() {
+		var url = this.getFullUrl();
 
 		chrome.tabs.getAllInWindow(null, function(tabs){
 			// If the service page has opened, select its tab.
@@ -95,8 +122,10 @@ var Service = klass.define({
 			// Create a new tab.
 			chrome.tabs.create({url: url, selected: true});
 		});
-	}
-});
+	};
+
+	return ctor;
+}());
 
 
 var serviceInfo = [{
@@ -106,8 +135,6 @@ var serviceInfo = [{
 	name: 'Google Calendar',
 	url: 'www.google.com/calendar',
 	icon: 'images/goog-cal.png'
-}, {
-	id: 'reader'
 }, {
 	id: 'contacts',
 	name: 'Contacts',
@@ -148,29 +175,31 @@ var serviceInfo = [{
 	name: 'Blogger',
 	url: 'www.blogger.com/home',
 	icon: 'images/goog-blogger.png',
-	menus: [{
-		title: 'Blog this page',
-		context: 'page',
-		action: 'blogger'
-	}, {
-		title: 'Blog this link',
-		context: 'link',
-		action: 'blogger'
-	}, {
-		title: 'Blog this text',
-		context: 'selection',
-		action: 'blogger'
-	}]
+	menus: [
+		{
+			title: chrome.i18n.getMessage('blog_this_page'),
+			context: 'page',
+			id: 'blog-page'
+		},
+		{
+			title: chrome.i18n.getMessage('blog_this_link'),
+			title: 'Blog this link',
+			context: 'link',
+			id: 'blog-link'
+		},
+		{
+			title: chrome.i18n.getMessage('blog_this_text'),
+			context: 'selection',
+			id: 'blog-text'
+		}
+	]
 }, {
 	id: 'adsense',
 	name: 'Adsense',
 	url: 'www.google.com/adsense',
 	icon: 'images/goog-adsense-old.png'
 }, {
-	id: 'appengine',
-	name: 'AppEngine',
-	url: 'appengine.google.com',
-	icon: 'images/goog-app-engine.png'
+	id: 'appengine'
 }, {
 	id: 'picasa',
 	name: 'Picasa',
@@ -216,11 +245,6 @@ var serviceInfo = [{
 	url: 'http://www.google.com/ig',
 	icon: 'images/goog-igoogle-old.png'
 }, {
-	id: 'notebook',
-	name: 'Google Notebook',
-	url: 'www.google.com/notebook/',
-	icon: 'images/goog-notebook.png'
-}, {
 	id: 'translate',
 	name: 'Google Translate',
 	url: 'http://translate.google.com/',
@@ -236,19 +260,12 @@ var serviceInfo = [{
 	url: 'http://www.google.com/bookmarks',
 	icon: 'images/goog-bookmarks.png'
 }, {
-	id: 'urlshortener',
-	name: 'Google URL Shortener',
-	url: 'http://goo.gl'
+	id: 'urlshortener'
 }, {
 	id: 'music',
 	name: 'music beta',
 	url: 'music.google.com/music/',
 	icon: 'images/goog-music-o.png'
-}, {
-	id: 'knol',
-	name: 'Knol',
-	url: 'http://knol.google.com/k',
-	icon: 'images/goog-knol.png'
 }, {
 	id: 'finance',
 	name: 'Google finance',
@@ -276,6 +293,11 @@ var serviceInfo = [{
 	name: 'Panoramio',
 	url: 'http://www.panoramio.com',
 	icon: 'images/goog-panoramio-old.png'
+}, {
+	id: 'scholar',
+	name: 'Google Scholar',
+	url: 'http://scholar.google.com',
+	icon: 'images/scholar-64.png'
 }];
 
 
@@ -284,8 +306,9 @@ window.addEventListener('load', function(){
 	services = serviceInfo.map(function(args){
 		switch(args.id){
 			case 'gmail': return new Gmail();
-			case 'reader': return new GoogleReader();
 			case 'plus': return new GooglePlus();
+			case 'appengine': return new AppEngine();
+			case 'urlshortener': return new UrlShortener();
 			default: return new Service(args);
 		}
 	});

@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2012 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
+
+body {
+	margin: 0;
+	-webkit-user-select: none;
+}
+
+body > div {
+	margin-top: 3px;
+	margin-right: 0.5em;
+	line-height: 1;
+	text-align: right;
+}
+
+body > div > a {
+	display: inline-block;
+	position: relative;
+	margin: 0 0 1px 0.5em;
+	color: #444;
+	font: 10px/16px sans-serif;
+	text-decoration: none;
+	outline: none;
+}
+
+body > div > a:hover {
+	text-decoration: underline;
+}
+
+body > div > a:active {
+	margin-bottom: 0;
+	top: 1px;
+}

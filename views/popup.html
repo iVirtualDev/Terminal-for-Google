@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+	(C) 2012-2013 chick307 <chick307@gmail.com>
+
+	Licensed under the MIT License.
+	http://opensource.org/licenses/mit-license
+-->
+<html ng-app="terminalForGoogle" ng-csp>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="popup.css">
+	<link rel="stylesheet" href="icon-list.css">
+	<script src="/lib/angular.js"></script>
+	<script src="app.js"></script>
+	<script src="controller.js"></script>
+</head>
+<body ng-controller="Controller">
+	<ul class="icon-list columns-{{columns}} icon-only-{{iconOnly}}">
+		<li ng-repeat="icon in icons"
+			class="icon enabled-{{icon.enabled}}" data-id="{{icon.id}}">
+			<div ng-click="icon.open()">
+				<img ng-src="{{icon.image}}">
+				<span>{{icon.name}}</span>
+				<button
+					ng-click="icon.badgeCommand(); $event.stopPropagation()"
+					>{{icon.badgeText}}</button>
+			</div>
+		</li>
+	</ul>
+
+	<div>
+		<a href="#" ng-click="openAppsDashboard()">Apps Dashboard</a>
+		<a href="#" ng-click="openOptionPage()">{{ MSG_OPTIONS_PAGE }}</a>
+	</div>
+</body>
+</html>

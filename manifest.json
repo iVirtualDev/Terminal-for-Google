@@ -1,10 +1,13 @@
 {
 	"manifest_version": 2,
 	"name": "Terminal for Google",
-	"version": "1.10.22",
+	"version": "2.0.0",
 	"description": "Quick access to Google!",
+	"default_locale": "en_US",
 
 	"icons": {
+		"16": "images/icon-16.png",
+		"48": "images/icon-48.png",
 		"128": "images/icon-128.png"
 	},
 
@@ -13,6 +16,8 @@
 		"*://*/*",
 		"tabs"
 	],
+
+	"omnibox": {"keyword": "tg"},
 
 	"content_scripts": [
 		{
@@ -24,28 +29,24 @@
 
 	"background": {
 		"scripts": [
-			"scripts/klassjs/klass.js",
-			"services/service.js",
-			"services/gmail.js",
-			"services/reader.js",
-			"services/plus.js",
+			"scripts/service.js",
+			"scripts/services/gmail.js",
+			"scripts/services/plus.js",
+			"scripts/services/appengine.js",
+			"scripts/services/urlshortener.js",
 			"scripts/event-dispatcher.js",
 			"scripts/preference.js",
+			"scripts/badge.js",
+			"scripts/omnibox.js",
 			"scripts/background.js"
 		]
 	},
 
-	"options_page": "views/option/index.html",
+	"options_page": "views/option.html",
 
 	"browser_action": {
 		"default_title": "Terminal for Google",
 		"default_icon": "images/icon-19.png",
-		"default_popup": "views/popup/index.html"
-	},
-
-	"web_accessible_resources": [
-		"views/option/policy.html",
-		"views/option/services.html",
-		"views/option/about.html"
-	]
+		"default_popup": "views/popup.html"
+	}
 }

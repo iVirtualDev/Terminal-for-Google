@@ -1,29 +1,66 @@
+/*
+ * (C) 2012-2013 chick307 <chick307@gmail.com>
+ *
+ * Licensed under the MIT License.
+ * http://opensource.org/licenses/mit-license
+ */
 
-function EventDispatcher(owner, port){
-	var listeners = this._listeners = [];
+void function(global, definition) {
+	if (typeof exports === 'object') {
+		// CommonJS
+		module.exports = definition();
+	} else if (typeof define === 'function' && define.amd) {
+		// RequireJS
+		define(definition);
+	} else {
+		// Web browsers
+		global.EventDispatcher = definition();
+	}
+}(this, function() {
+	var EventDispatcher = (function() {
+		var ctor = function EventDispatcher(owner, port) {
+			if (!(this instanceof ctor)) {
+				throw new TypeError(
+					'Constructor cannot be called as a function.');
+			}
 
-	if(!port.onmessage)
-		port.onmessage = function(){};
+			this._owner = owner;
+			this._listeners = [];
+			this._port = port;
 
-	port.addEventListener('message', function(event){
-		listeners.forEach(function(listener){
-			listener.call(owner, event.data);
-		});
-	});
-}
+			if (!port.onmessage)
+				port.onmessage = function() {};
+			port.addEventListener('message', this, false);
+		};
 
-EventDispatcher.prototype.addListener = function(listener){
-	this._listeners.push(listener);
-};
+		var proto = ctor.prototype;
 
-EventDispatcher.prototype.removeListener = function(listener){
-	var index = this._listeners.indexOf(listener);
-	if(index !== -1)
-		delete this._listeners[index];
-};
+		proto.handleEvent = function handleEvent(event) {
+			var owner = this._owner, data = event.data;
+			this._listeners.forEach(function(listener){
+				listener.call(owner, data);
+			});
+		};
 
-EventDispatcher.prototype.hasListener = function(listener){
-	var index = this._listeners.indexOf(listener);
-	return index !== -1;
-};
+		proto.addListener = function(listener){
+			this._listeners.push(listener);
+			return listener;
+		};
 
+		proto.removeListener = function(listener){
+			var index = this._listeners.indexOf(listener);
+			if (index !== -1)
+				return this._listeners.splice(index, 1)[0];
+			return null;
+		};
+
+		proto.hasListener = function hasListener(listener) {
+			var index = this._listeners.indexOf(listener);
+			return index !== -1;
+		};
+
+		return ctor;
+	}());
+
+	return EventDispatcher;
+});

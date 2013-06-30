@@ -1,0 +1,95 @@
+{
+	"access_to": {
+		"message": "Access to $service$",
+		"placeholders": {
+			"service": {
+				"content": "$1"
+			}
+		}
+	},
+	"mail_this_page": {
+		"message": "Mail this page"
+	},
+	"mail_this_link": {
+		"message": "Mail this link"
+	},
+	"mail_this_text": {
+		"message": "Mail this text"
+	},
+	"status": {
+		"message": "status"
+	},
+	"shorten": {
+		"message": "shorten"
+	},
+	"options_page": {
+		"message": "Options Page"
+	},
+	"options": {
+		"message": "Options"
+	},
+	"services": {
+		"message": "Services"
+	},
+	"about": {
+		"message": "About"
+	},
+	"security": {
+		"message": "Security"
+	},
+	"use_ssl": {
+		"message": "use SSL (https://〜)"
+	},
+	"appearance": {
+		"message": "Appearance"
+	},
+	"show_icon_only": {
+		"message": "show icon only"
+	},
+	"columns": {
+		"message": "columns"
+	},
+	"drag_and_drop": {
+		"message": "drag & drop"
+	},
+	"check_unread_count": {
+		"message": "check unread count"
+	},
+	"enable_contextual_menu_in_web_pages": {
+		"message": "Enable contextual menu in web pages"
+	},
+	"enable_contextual_menu_in_links": {
+		"message": "Enable contextual menu in links"
+	},
+	"enable_contextual_menu_in_text": {
+		"message": "Enable contextual menu in text"
+	},
+	"enable_shorten_button": {
+		"message": "enable \"shorten\" button"
+	},
+	"before_timing": {
+		"message": " (every"
+	},
+	"after_timing": {
+		"message": ")"
+	},
+	"saved": {
+		"message": "saved"
+	},
+	"all_the_images_are_provided_by": {
+		"message": "All the images are provided by $person$.",
+		"placeholders": {
+			"person": {
+				"content": "$1"
+			}
+		}
+	},
+	"minutes": {
+		"message": "$value$min",
+		"placeholders": {
+			"value": {
+				"content": "$1"
+			}
+		}
+	}
+}
