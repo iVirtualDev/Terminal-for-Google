@@ -82,7 +82,6 @@
 
 .icon > div > button:empty { display: none; }
 .icon[data-id=gmail] > div > button { background-color: red; }
-.icon[data-id=reader] > div > button { background-color: blue; }
 .icon[data-id=plus] > div > button { background-color: red; }
 .icon[data-id=appengine] > div > button,
 .icon[data-id=urlshortener] > div > button { background-color: #468; }

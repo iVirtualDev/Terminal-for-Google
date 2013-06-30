@@ -20,8 +20,6 @@ var pref = new Preference({
 		'mail-page-enabled': true,
 		'mail-link-enabled': true,
 		'mail-text-enabled': true,
-		'reader-poll-interval': 1000 * 60 * 5,
-		'reader-poll-enabled': true,
 		'blog-page-enabled': true,
 		'blog-link-enabled': true,
 		'blog-text-enabled': true,
@@ -51,9 +49,8 @@ var pref = new Preference({
 });
 
 
-var badge = new Badge(['gmail', 'reader', 'plus']);
+var badge = new Badge(['gmail', 'plus']);
 badge.setColor('gmail', [255, 16, 16]);
-badge.setColor('reader', [16, 16, 255]);
 badge.setColor('plus', [255, 16, 16]);
 
 

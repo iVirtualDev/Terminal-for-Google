@@ -31,7 +31,6 @@
 		"scripts": [
 			"scripts/service.js",
 			"scripts/services/gmail.js",
-			"scripts/services/reader.js",
 			"scripts/services/plus.js",
 			"scripts/services/appengine.js",
 			"scripts/services/urlshortener.js",

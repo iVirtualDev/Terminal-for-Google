@@ -73,9 +73,6 @@ function Controller($scope, i18n) {
 	$scope.gmailEnabled = pref.get('gmail-enabled');
 	$scope.gmailPollEnabled = pref.get('gmail-poll-enabled');
 	$scope.gmailPollInterval = pref.get('gmail-poll-interval');
-	$scope.readerEnabled = pref.get('reader-enabled');
-	$scope.readerPollEnabled = pref.get('reader-poll-enabled');
-	$scope.readerPollInterval = pref.get('reader-poll-interval');
 	$scope.plusEnabled = pref.get('plus-enabled');
 	$scope.plusPollEnabled = pref.get('plus-poll-enabled');
 	$scope.plusPollInterval = pref.get('plus-poll-interval');
@@ -91,9 +88,6 @@ function Controller($scope, i18n) {
 		pref.set('gmail-enabled', $scope.gmailEnabled);
 		pref.set('gmail-poll-enabled', $scope.gmailPollEnabled);
 		pref.set('gmail-poll-interval', +$scope.gmailPollInterval);
-		pref.set('reader-enabled', $scope.readerEnabled);
-		pref.set('reader-poll-enabled', $scope.readerPollEnabled);
-		pref.set('reader-poll-interval', +$scope.readerPollInterval);
 		pref.set('plus-enabled', $scope.plusEnabled);
 		pref.set('plus-poll-enabled', $scope.plusPollEnabled);
 		pref.set('plus-poll-interval', +$scope.plusPollInterval);

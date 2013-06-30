@@ -161,39 +161,6 @@
 				</ul>
 			</div>
 
-			<div class="sect" ng-show="readerEnabled">
-				<div class="sect-title">Google Reader</div>
-				<ul>
-					<li>
-						<input type="checkbox" id="reader-poll-box"
-							ng-model="readerPollEnabled"
-							ng-change="change('reader-poll-enabled')">
-						<label for="reader-poll-box">
-							{{ MSG_CHECK_UNREAD_COUNT }}
-						</label>
-						<label for="reader-poll-interval-box">
-							{{ MSG_BEFORE_TIMING }}
-						</label>
-						<select id="reader-poll-interval-box"
-							ng-model="readerPollInterval"
-							ng-disabled="!readerPollEnabled"
-							ng-change="change('reader-poll-interval')">
-							<option value="300000">{{ minutesMsg(5) }}</option>
-							<option
-								value="600000">{{ minutesMsg(10) }}</option>
-							<option
-								value="1800000">{{ minutesMsg(30) }}</option>
-						</select>
-						<label for="reader-poll-interval-box">
-							{{ MSG_AFTER_TIMING }}
-						</label>
-						<span
-							data-key="reader-poll-enabled reader-poll-interval"
-							class="msg">{{ MSG_SAVED }}</span>
-					</li>
-				</ul>
-			</div>
-
 			<div class="sect" ng-show="plusEnabled">
 				<div class="sect-title">Google+</div>
 				<ul>

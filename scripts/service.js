@@ -136,8 +136,6 @@ var serviceInfo = [{
 	url: 'www.google.com/calendar',
 	icon: 'images/goog-cal.png'
 }, {
-	id: 'reader'
-}, {
 	id: 'contacts',
 	name: 'Contacts',
 	url: 'www.google.com/contacts',
@@ -308,7 +306,6 @@ window.addEventListener('load', function(){
 	services = serviceInfo.map(function(args){
 		switch(args.id){
 			case 'gmail': return new Gmail();
-			case 'reader': return new GoogleReader();
 			case 'plus': return new GooglePlus();
 			case 'appengine': return new AppEngine();
 			case 'urlshortener': return new UrlShortener();
